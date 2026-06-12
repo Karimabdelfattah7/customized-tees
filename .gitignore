@@ -1,0 +1,9 @@
+# Dependencies (re-installed automatically)
+node_modules
+
+# Build output (rebuilt automatically by GitHub Actions)
+dist
+
+# Logs and misc
+*.log
+.DS_Store

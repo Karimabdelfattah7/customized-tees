@@ -1,0 +1,9 @@
+Put your store photos in THIS folder.
+
+- stmatthews-store.jpg  (St Matthews storefront)
+- jefferson-store.jpg   (Jefferson Mall storefront)
+
+The /hof subfolder holds the Home page 'Hall of Designs' photos:
+  hof/1.jpg ... hof/8.jpg
+
+After adding photos, run:  npm run build
