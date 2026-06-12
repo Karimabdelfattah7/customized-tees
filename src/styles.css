@@ -1,0 +1,1888 @@
+/* ===============================================================
+   styles.css — ALL the colors, spacing and animations live here.
+   ===============================================================
+   Sections (search for "===" to jump):
+     1. EDO SZ FONT       — the brand-name font
+     2. COLOR THEMES      — light mode + dark mode color values
+     3. BASIC LAYOUT      — body, container, buttons, headings
+     4. NAVBAR + MOBILE   — top bar + slide-in menu
+     5. HERO + MARQUEE    — homepage top + scrolling ribbon
+     6. SECTIONS          — feature cards, gallery, locations
+     7. ABOUT PAGE        — story + map cards + promise cards
+     8. CUSTOMIZE PAGE    — categories + form + drop zone
+     9. CONTACT PAGE      — call/email cards
+    10. FOOTER
+    11. SCROLL REVEAL + RESPONSIVE
+   =============================================================== */
+
+
+/* ============ 1. EDO SZ BRAND FONT ============================
+   "Edo SZ" is a paid/free-but-not-on-Google font. If you have the
+   font file (Edo SZ.ttf or .woff2), drop it into the /public
+   folder and update the src: url(...) below.
+   If the font isn't found, the browser falls back to Permanent
+   Marker (a similar brush style from Google Fonts).
+   =============================================================== */
+@font-face {
+  font-family: 'Edo SZ';
+  src: local('Edo SZ'),
+       url('/edosz.woff2') format('woff2'),
+       url('/edosz.ttf')   format('truetype');
+  font-display: swap;
+}
+
+
+/* ============ 2. COLOR THEMES =================================
+   Two themes are defined: light (default) and dark.
+   To tweak any color, just edit the value once here.
+   =============================================================== */
+:root,
+html.light {
+  --bg:        #FFF7EE;   /* warm cream page background           */
+  --bg-alt:    #FFEFD8;   /* slightly darker stripe for sections  */
+  --surface:   #FFFFFF;   /* card backgrounds                     */
+  --text:      #1A1A1A;   /* main text                            */
+  --muted:     #555;      /* secondary text                       */
+  --border:    rgba(0,0,0,.08);
+  --shadow:    0 12px 40px rgba(0,0,0,.08);
+
+  --orange:    #FF6B00;
+  --blue:      #00AAFF;
+  --pink:      #FF2D87;
+  --yellow:    #FFD23F;
+
+  --hero-bg:   linear-gradient(135deg,#FFE9D2 0%,#FFD6E7 50%,#D8F1FF 100%);
+  --footer-bg: #111;
+  --footer-tx: #ddd;
+}
+
+html.dark {
+  --bg:        #14121A;
+  --bg-alt:    #0E0C14;
+  --surface:   #1C1A24;
+  --text:      #F5F2EC;
+  --muted:     #B8B3A8;
+  --border:    rgba(255,255,255,.08);
+  --shadow:    0 12px 40px rgba(0,0,0,.5);
+
+  --orange:    #FF8533;
+  --blue:      #33BFFF;
+  --pink:      #FF5BA0;
+  --yellow:    #FFD96A;
+
+  --hero-bg:   radial-gradient(circle at 20% 10%, rgba(255,107,0,.35), transparent 40%),
+               radial-gradient(circle at 80% 60%, rgba(0,170,255,.30), transparent 40%),
+               radial-gradient(circle at 50% 90%, rgba(255,45,135,.25), transparent 40%),
+               #0a0a0a;
+  --footer-bg: #000;
+  --footer-tx: #ccc;
+}
+
+
+/* ============ 3. BASIC LAYOUT =================================  */
+* { margin: 0; padding: 0; box-sizing: border-box }
+html { scroll-behavior: smooth }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Oswald', sans-serif;
+  line-height: 1.5;
+  overflow-x: hidden;
+  transition: background .35s, color .35s;
+}
+img { max-width: 100%; display: block }
+a { color: inherit; text-decoration: none }
+
+/* Headings always use Bebas Neue (bold condensed) */
+h1, h2, h3, h4 {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: .02em;
+  line-height: 1.05;
+}
+
+/* Centered wrapper used in most sections */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Brand name — uses Edo SZ with paint-brush fallback */
+.brand-script,
+.brand {
+  font-family: 'Edo SZ', 'Permanent Marker', cursive;
+  font-weight: 400;
+  text-transform: none;
+}
+
+/* Accent helpers — use as <span className="accent-orange">word</span> */
+.accent-orange { color: var(--orange) }
+.accent-blue   { color: var(--blue)   }
+.accent-pink   { color: var(--pink)   }
+
+/* Generic button */
+.btn {
+  display: inline-block;
+  padding: 14px 28px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  letter-spacing: .12em;
+  color: #fff;
+  cursor: pointer;
+  border: 0;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--orange), var(--pink), var(--blue));
+  background-size: 200% 100%;
+  box-shadow: 0 6px 20px rgba(255,107,0,.25);
+  transition: background-position .4s, transform .2s, box-shadow .2s;
+}
+.btn:hover {
+  background-position: 100% 0;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(0,170,255,.35);
+}
+.btn.big      { font-size: 22px; padding: 18px 44px }
+.btn.outline {
+  background: transparent;
+  border: 2px solid var(--text);
+  color: var(--text);
+  box-shadow: none;
+}
+.btn.outline:hover { border-color: var(--blue); color: var(--blue) }
+.btn.outline.white { border-color: #fff; color: #fff }
+
+
+/* ============ 4. NAVBAR + MOBILE MENU =========================  */
+.navbar {
+  position: sticky; top: 0; z-index: 50;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 2px solid var(--orange);
+}
+.navbar-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+/* Store name in the navbar — paints the letters with a TIE-DYE
+   gradient (orange → pink → magenta → blue → purple) that slowly
+   animates left-and-right. The trick is `background-clip: text`:
+   the gradient is the background, and we ONLY show it where the
+   text shape is. */
+/* The brand area is a flex container holding either the logo image
+   or the fallback text. */
+.brand {
+  display: inline-flex;
+  align-items: center;
+}
+/* Tie-dye logo: the animated gradient is the background, and your
+   logo image (white letters on black) is used as a LUMINANCE MASK —
+   white shows the gradient, black becomes transparent. */
+.logo-tiedye {
+  display: inline-block;
+  background: linear-gradient(
+    90deg,
+    #FF6B00 0%,
+    #FFD23F 18%,
+    #FF2D87 38%,
+    #C026D3 58%,
+    #00AAFF 80%,
+    #1E4FD8 100%
+  );
+  background-size: 200% 100%;
+  animation: tieDyeFlow 8s linear infinite;
+  /* mask-image is set inline by Logo.jsx; these control how it sits */
+  -webkit-mask-repeat: no-repeat;        mask-repeat: no-repeat;
+  -webkit-mask-position: center;         mask-position: center;
+  -webkit-mask-size: contain;            mask-size: contain;
+  -webkit-mask-mode: luminance;          mask-mode: luminance;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,.25));
+}
+/* hidden image, only there to give the logo its correct width */
+.logo-tiedye .logo-sizer {
+  width: auto;
+  display: block;
+  visibility: hidden;
+}
+/* Fallback styled text (tie-dye), shown only if logo.png is missing.
+   Styled to echo the logo: brush-script font, capital first letters,
+   and a slight forward tilt. */
+.brand-text {
+  font-family: 'Kaushan Script', 'Satisfy', cursive;
+  font-size: 34px;
+  line-height: 1;
+  display: inline-block;
+  transform: skewX(-6deg) rotate(-2deg);   /* the tilt */
+  padding-right: 6px;
+  background: linear-gradient(
+    90deg,
+    #FF6B00 0%,
+    #FFD23F 18%,
+    #FF2D87 38%,
+    #C026D3 58%,
+    #00AAFF 80%,
+    #1E4FD8 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+          color: transparent;
+  -webkit-text-stroke: 0.5px rgba(0,0,0,.35);
+  animation: tieDyeFlow 8s linear infinite;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,.25));
+}
+@keyframes tieDyeFlow {
+  0%   { background-position: 0% 50% }
+  100% { background-position: 200% 50% }
+}
+/* Footer logo image (a bit bigger) */
+.brand-logo-foot {
+  height: 60px;
+  width: auto;
+  display: block;
+}
+/* Footer fallback text — same brush-script, tilted style */
+.brand-foot-text {
+  font-family: 'Kaushan Script', 'Satisfy', cursive;
+  display: inline-block;
+  transform: skewX(-6deg) rotate(-2deg);
+}
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 28px;
+}
+.nav-links a {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  letter-spacing: .1em;
+  position: relative;
+  padding: 6px 0;
+  color: var(--text);
+}
+.nav-links a:hover,
+.nav-links a.active { color: var(--orange) }
+.nav-links a::after {
+  content: "";
+  position: absolute; left: 0; bottom: 0;
+  width: 0; height: 3px;
+  background: linear-gradient(90deg, var(--orange), var(--blue));
+  transition: width .3s;
+}
+.nav-links a:hover::after,
+.nav-links a.active::after { width: 100% }
+
+.nav-right { display: flex; align-items: center; gap: 12px }
+.theme-btn,
+.icon-btn,
+.hamburger {
+  display: flex; align-items: center; justify-content: center;
+  background: none;
+  border: 2px solid var(--border);
+  color: var(--text);
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background .2s, border-color .2s, color .2s;
+}
+.theme-btn:hover,
+.icon-btn:hover,
+.hamburger:hover { border-color: var(--orange); color: var(--orange) }
+
+/* Search row inside the phone slide-in menu */
+.mobile-search {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%;
+  background: var(--orange);
+  color: #fff;
+  border: 0;
+  padding: 14px 16px;
+  border-radius: 8px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: .08em;
+  cursor: pointer;
+  margin-bottom: 16px;
+}
+.hamburger { display: none }
+
+/* Slide-in mobile menu */
+.mobile-menu {
+  position: fixed;
+  top: 0; right: -100%;
+  width: 80%; max-width: 340px; height: 100vh;
+  background: var(--surface);
+  border-left: 4px solid var(--orange);
+  z-index: 100;
+  padding: 80px 30px 30px;
+  transition: right .35s ease;
+  box-shadow: -20px 0 40px rgba(0,0,0,.25);
+}
+.mobile-menu.open { right: 0 }
+.mobile-menu .close {
+  position: absolute; top: 18px; right: 24px;
+  background: none; border: 0;
+  color: var(--text);
+  font-size: 28px; cursor: pointer;
+}
+.mobile-menu a {
+  display: block;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  padding: 14px 0;
+  border-bottom: 1px dashed var(--border);
+  color: var(--text);
+}
+.mobile-menu a:hover,
+.mobile-menu a.active { color: var(--orange) }
+
+
+/* ============ 5a. HERO EXTRA DECORATIONS =====================
+   Big blurred color blobs and floating shirts for visual energy.
+   =============================================================== */
+.blob {
+  position: absolute;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: .55;
+  pointer-events: none;
+  animation: blobMove 11s ease-in-out infinite;
+}
+.blob.b-orange { background: var(--orange); top: -160px; left: -120px }
+.blob.b-blue   { background: var(--blue);   bottom: -180px; right: -120px; animation-delay: -4s }
+.blob.b-pink   { background: var(--pink);   top: 40%; left: 45%; width: 380px; height: 380px; animation-delay: -7s }
+@keyframes blobMove {
+  0%,100% { transform: translate(0,0) scale(1) }
+  50%     { transform: translate(40px,-30px) scale(1.1) }
+}
+
+.float-shirt {
+  position: absolute;
+  font-size: 60px;
+  opacity: .25;
+  animation: floaty 6s ease-in-out infinite;
+  pointer-events: none;
+}
+.float-shirt.s1 { top: 18%; left: 6%;  animation-delay: 0s }
+.float-shirt.s2 { bottom: 18%; right: 6%; animation-delay: -2s; font-size: 50px }
+.float-shirt.s3 { top: 30%; right: 12%; color: var(--pink); animation-delay: -1s; font-size: 40px }
+.float-shirt.s4 { bottom: 30%; left: 12%; color: var(--blue); animation-delay: -3s; font-size: 40px }
+@keyframes floaty {
+  0%,100% { transform: translateY(0) rotate(-6deg) }
+  50%     { transform: translateY(-20px) rotate(6deg) }
+}
+
+/* Hero stats row */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-top: 50px;
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.stat {
+  background: color-mix(in srgb, var(--surface) 75%, transparent);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 10px;
+  backdrop-filter: blur(8px);
+}
+.stat .num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 44px;
+  color: var(--orange);
+  line-height: 1;
+}
+.stat .num span {
+  font-size: 22px;
+  color: var(--blue);
+  margin-left: 2px;
+}
+.stat p {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+
+/* ============ 5. HERO + MARQUEE ==============================  */
+.hero {
+  position: relative;
+  overflow: hidden;
+  min-height: 86vh;
+  display: flex; align-items: center; justify-content: center;
+  /* Tie-dye background — matches the orange / pink / magenta / blue
+     splatter on the store's business card. The radial gradients
+     blend like real tie-dye when they overlap.                     */
+  background:
+    radial-gradient(circle at 12% 18%, rgba(255,107,0,.85), transparent 38%),
+    radial-gradient(circle at 88% 12%, rgba(255,45,135,.80), transparent 40%),
+    radial-gradient(circle at 95% 75%, rgba(0,170,255,.85),  transparent 42%),
+    radial-gradient(circle at 18% 88%, rgba(255,210,63,.65), transparent 38%),
+    radial-gradient(circle at 55% 50%, rgba(108,40,180,.55), transparent 50%),
+    #0a0a0a;
+  padding: 80px 20px;
+  text-align: center;
+  animation: tieDyeShift 18s ease-in-out infinite;
+}
+@keyframes tieDyeShift {
+  0%, 100% { background-position: 0 0,    0 0,    0 0,    0 0,    0 0 }
+  50%      { background-position: 20px 10px, -20px 10px, 10px -10px, -10px -20px, 0 0 }
+}
+html.light .hero {
+  /* In light mode the tie-dye gets a softer cream base so text stays readable. */
+  background:
+    radial-gradient(circle at 12% 18%, rgba(255,107,0,.70), transparent 38%),
+    radial-gradient(circle at 88% 12%, rgba(255,45,135,.65), transparent 40%),
+    radial-gradient(circle at 95% 75%, rgba(0,170,255,.70),  transparent 42%),
+    radial-gradient(circle at 18% 88%, rgba(255,210,63,.55), transparent 38%),
+    radial-gradient(circle at 55% 50%, rgba(108,40,180,.40), transparent 50%),
+    #fff7ee;
+}
+/* When the hero is tie-dye we don't need the extra blobs to overlap it */
+.hero .blob { opacity: .35 }
+/* Make the hero copy "pop" on top of the tie-dye via a dark card-style backdrop */
+.hero-inner { position: relative; z-index: 2; max-width: 900px }
+.hero h1, .hero .sub, .hero .badge {
+  text-shadow: 0 2px 18px rgba(0,0,0,.5);
+}
+html.dark .hero h1 { color: #fff }
+html.light .hero h1 { color: #111 }
+.hero-inner { position: relative; z-index: 2; max-width: 900px }
+
+/* Animated paint drips */
+.drop {
+  position: absolute;
+  width: 8px; height: 60px;
+  border-radius: 0 0 50% 50%;
+  opacity: .85;
+  animation: drop 4s linear infinite;
+}
+@keyframes drop {
+  0%   { transform: translateY(-100px) scaleY(.6); opacity: 0 }
+  20%  { opacity: .9 }
+  100% { transform: translateY(110vh)  scaleY(1.4); opacity: 0 }
+}
+
+.hero .badge {
+  display: inline-block;
+  padding: 6px 18px;
+  border: 2px solid var(--orange);
+  color: var(--orange);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  letter-spacing: .2em;
+  margin-bottom: 24px;
+  transform: rotate(-2deg);
+  background: var(--surface);
+}
+.hero h1 {
+  font-size: clamp(42px, 7vw, 96px);
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+.hero h1 .accent-orange,
+.hero h1 .accent-blue {
+  font-family: 'Edo SZ', 'Permanent Marker', cursive;
+  text-transform: none;
+  font-weight: 400;
+}
+.hero .sub {
+  font-size: 20px;
+  color: var(--muted);
+  margin-bottom: 32px;
+}
+.cta-row {
+  display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+}
+
+/* Scrolling marquee ribbon */
+.marquee {
+  background: var(--text);
+  color: var(--bg);
+  overflow: hidden;
+  padding: 16px 0;
+  border-top: 4px solid var(--orange);
+  border-bottom: 4px solid var(--blue);
+}
+.marquee-track {
+  display: flex;
+  white-space: nowrap;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: .25em;          /* wider letter spacing = less packed */
+  animation: scroll 48s linear infinite;  /* slower scroll              */
+}
+@keyframes scroll {
+  from { transform: translateX(0) }
+  to   { transform: translateX(-50%) }
+}
+
+/* ============ BULK ORDERS BANNER =============================  */
+.bulk-banner {
+  padding: 60px 0;
+  background:
+    linear-gradient(135deg,
+      color-mix(in srgb, var(--orange) 18%, var(--bg)) 0%,
+      color-mix(in srgb, var(--blue)   18%, var(--bg)) 100%);
+  position: relative;
+  overflow: hidden;
+}
+.bulk-banner::before {
+  content: "📦";
+  position: absolute;
+  font-size: 280px;
+  opacity: .05;
+  top: -60px; right: 5%;
+  transform: rotate(-15deg);
+}
+.bulk-inner {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 30px;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+.bulk-ico {
+  font-size: 80px;
+  filter: drop-shadow(0 4px 20px rgba(255,107,0,.4));
+}
+.bulk-text h2 {
+  font-size: clamp(28px, 4vw, 48px);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.bulk-text p { color: var(--muted); font-size: 17px; max-width: 600px }
+.bulk-text p strong { color: var(--orange); font-weight: 700 }
+
+
+/* ============ 6. GENERIC SECTIONS ============================  */
+.block { padding: 90px 0 }
+.block.alt { background: var(--bg-alt) }
+
+.section-title { text-align: center; margin-bottom: 50px }
+.section-title h2 {
+  font-size: clamp(36px, 5vw, 64px);
+  text-transform: uppercase;
+}
+.section-title .kicker {
+  color: var(--orange);
+  font-family: 'Edo SZ', 'Permanent Marker', cursive;
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+.section-title p {
+  color: var(--muted);
+  max-width: 600px;
+  margin: 14px auto 0;
+}
+
+/* Feature cards */
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+.feature {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 36px 28px;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform .3s, border-color .3s;
+}
+.feature:hover { transform: translateY(-6px); border-color: var(--orange) }
+.feature::before {
+  content: "";
+  position: absolute;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: .35;
+  top: -80px; right: -80px;
+}
+.feature:nth-child(1)::before { background: var(--orange) }
+.feature:nth-child(2)::before { background: var(--blue) }
+.feature:nth-child(3)::before { background: var(--pink) }
+.feature .num {
+  font-family: 'Edo SZ', 'Permanent Marker', cursive;
+  color: var(--orange);
+  font-size: 42px;
+}
+.feature h3 { font-size: 30px; margin: 14px 0 12px; text-transform: uppercase }
+.feature p  { color: var(--muted) }
+
+/* Gallery */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+}
+.gallery .card {
+  aspect-ratio: 1/1;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  display: flex; align-items: flex-end;
+  padding: 18px;
+  transition: transform .3s;
+  box-shadow: var(--shadow);
+}
+.gallery .card:hover { transform: scale(1.03) }
+.gallery .card::before {
+  content: "";
+  position: absolute; inset: 0;
+  z-index: 1;     /* dark overlay sits above the photo, under the text */
+  background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,.85) 100%);
+  pointer-events: none;
+}
+/* Real catalog photo filling the card (behind the dark overlay) */
+.gallery .card .card-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: contain;
+  background: #fff;     /* DTF designs print on white */
+  padding: 10px;
+  z-index: 0;
+}
+.cbadge {
+  position: absolute; top: 14px; left: 14px;
+  z-index: 2;
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: .1em;
+  font-size: 13px;
+  padding: 6px 12px;
+  color: #000;
+}
+.cbadge.orange { background: var(--orange) }
+.cbadge.blue   { background: var(--blue);  color: #fff }
+.cbadge.pink   { background: var(--pink);  color: #fff }
+.clabel {
+  position: relative; z-index: 2;
+  color: #fff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+}
+/* Gradient placeholder colors for the gallery cards */
+.gallery .c1 { background: linear-gradient(135deg, #FF6B00, #E91E63) }
+.gallery .c2 { background: linear-gradient(135deg, #00AAFF, #0066cc) }
+.gallery .c3 { background: linear-gradient(135deg, #FF2D87, #7a1e8a) }
+.gallery .c4 { background: linear-gradient(135deg, #FF6B00, #FFD700) }
+.gallery .c5 { background: linear-gradient(135deg, #00AAFF, #FF2D87) }
+.gallery .c6 { background: linear-gradient(135deg, #222,    #FF6B00) }
+.gallery .c7 { background: linear-gradient(135deg, #0a0a0a, #00AAFF) }
+.gallery .c8 { background: linear-gradient(135deg, #FF2D87, #FF6B00) }
+
+/* Locations call-to-action (homepage) */
+.locations-cta {
+  padding: 80px 0;
+  background: var(--bg);
+  position: relative;
+}
+.cta-heading {
+  text-align: center;
+  font-size: clamp(40px, 6vw, 72px);
+  margin-bottom: 50px;
+  text-transform: uppercase;
+}
+.loc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+.loc-card {
+  padding: 40px 30px;
+  border-radius: 10px;
+  color: #fff;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: transform .3s;
+  box-shadow: var(--shadow);
+}
+.loc-card:hover { transform: translateY(-6px) }
+.loc-card.orange { background: linear-gradient(160deg, var(--orange), #cc4d00) }
+.loc-card.blue   { background: linear-gradient(160deg, var(--blue),   #0066aa) }
+.loc-card .pin { font-size: 48px; margin-bottom: 10px }
+.loc-card h3   { font-size: 36px; text-transform: uppercase; letter-spacing: .05em }
+.loc-card p    { font-size: 16px; opacity: .95; margin: 8px 0 20px }
+
+
+/* ============ REVIEWS ========================================  */
+.reviews {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+.review {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px;
+  box-shadow: var(--shadow);
+  position: relative;
+}
+.review::before {
+  content: "“";
+  position: absolute;
+  top: -20px; left: 14px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 120px;
+  color: var(--orange);
+  opacity: .25;
+  line-height: 1;
+}
+.review .stars {
+  color: var(--orange);
+  font-size: 22px;
+  margin-bottom: 14px;
+  letter-spacing: .15em;
+}
+.review p { color: var(--text); font-size: 16px; margin-bottom: 16px; font-style: italic }
+.review .who {
+  color: var(--muted);
+  font-size: 14px;
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: .1em;
+}
+.center { text-align: center }
+.center.mt { margin-top: 40px }
+
+/* ============ CARE INSTRUCTIONS ==============================  */
+.care {
+  padding: 80px 0;
+  background:
+    radial-gradient(circle at 0% 0%,   rgba(255,107,0,.18), transparent 30%),
+    radial-gradient(circle at 100% 0%, rgba(255,45,135,.18), transparent 30%),
+    radial-gradient(circle at 0% 100%, rgba(255,107,0,.18), transparent 30%),
+    radial-gradient(circle at 100% 100%, rgba(0,170,255,.18), transparent 30%),
+    var(--bg-alt);
+}
+.care-title {
+  text-align: center;
+  font-size: 48px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.care-sub {
+  text-align: center;
+  color: var(--muted);
+  margin-bottom: 40px;
+}
+.care-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 30px;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+.care-item .icon {
+  width: 80px; height: 80px;
+  margin: 0 auto 14px;
+  border: 3px solid var(--text);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 30px; font-weight: 700;
+  position: relative;
+  background: var(--surface);
+}
+.care-item .icon.x::after {
+  content: "";
+  position: absolute;
+  width: 120%; height: 3px;
+  background: var(--text);
+  transform: rotate(-30deg);
+}
+.care-item p {
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  color: var(--text);
+  font-weight: 600;
+}
+
+
+/* ============ 7. ABOUT PAGE ==================================  */
+.page-hero {
+  padding: 90px 20px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background: var(--hero-bg);
+}
+.page-hero .kicker {
+  color: var(--pink);
+  font-family: 'Edo SZ', 'Permanent Marker', cursive;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+.page-hero h1 {
+  font-size: clamp(40px, 6vw, 80px);
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+.page-hero p {
+  color: var(--muted);
+  font-size: 20px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.story {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  align-items: center;
+}
+.story-img {
+  aspect-ratio: 4/3;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--orange), var(--pink), var(--blue));
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.story-img::after {
+  content: "CUSTOMIZED TEES";
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Edo SZ', 'Permanent Marker', cursive;
+  font-size: 38px;
+  color: #fff;
+  text-shadow: 0 4px 20px rgba(0,0,0,.5);
+  background: radial-gradient(ellipse at center, rgba(0,0,0,.55) 30%, transparent 70%);
+}
+.story h2 {
+  font-size: 48px;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+.story p {
+  color: var(--muted);
+  font-size: 17px;
+  margin-bottom: 14px;
+}
+
+/* Location detail cards */
+.location-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+.loc-detail {
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+.loc-detail .head { padding: 24px; color: #fff }
+.loc-detail.orange .head { background: linear-gradient(135deg, var(--orange), #c54a00) }
+.loc-detail.blue   .head { background: linear-gradient(135deg, var(--blue),   #0066aa) }
+.loc-detail .head h3 { font-size: 32px; text-transform: uppercase }
+/* Map iframe — sized like a card region */
+.loc-detail .map {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border: 0;
+  display: block;
+  /* In dark mode the bright Google map can be hard on the eyes —
+     this filter tones it down without breaking readability. */
+  filter: brightness(.95);
+}
+html.dark .loc-detail .map {
+  filter: brightness(.85) contrast(1.05) invert(.92) hue-rotate(180deg);
+}
+.loc-detail .body { padding: 22px }
+.loc-detail .body.center { text-align: center; padding: 40px 22px }
+.loc-detail .body p { color: var(--muted); margin-bottom: 10px }
+.loc-detail .body p strong { color: var(--text) }
+.loc-detail .body .btn { margin-top: 12px }
+
+/* Promise cards */
+.promise {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+}
+.p-card {
+  background: var(--surface);
+  border-left: 4px solid var(--orange);
+  padding: 24px;
+  border-radius: 6px;
+  box-shadow: var(--shadow);
+}
+.p-card.b { border-color: var(--blue) }
+.p-card.p { border-color: var(--pink) }
+.p-card h3 { font-size: 24px; margin-bottom: 10px; text-transform: uppercase }
+.p-card p  { color: var(--muted) }
+
+
+/* ============ SEARCH BAR + DESIGN GALLERY ==================== */
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  max-width: 640px;
+  margin: 0 auto 10px;
+}
+#design-search {
+  flex: 1;
+  padding: 16px 18px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;            /* 16px stops iOS auto-zoom on focus */
+  color: var(--text);
+  transition: border-color .2s, box-shadow .2s;
+}
+#design-search:focus {
+  outline: none;
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(255,107,0,.18);
+}
+#design-search::placeholder { color: var(--muted) }
+#search-clear {
+  width: 44px; height: 44px;          /* meets 44px touch-target rule */
+  border: 2px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: border-color .2s, color .2s;
+}
+#search-clear:hover { border-color: var(--orange); color: var(--orange) }
+.search-results-count {
+  text-align: center;
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+.no-results {
+  text-align: center;
+  color: var(--muted);
+  font-size: 18px;
+  padding: 40px 0;
+}
+
+.design-section { margin-top: 40px }
+.design-section__heading {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  margin-bottom: 18px;
+  display: flex; align-items: center; gap: 12px;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 8px;
+}
+.design-section__heading .count {
+  font-size: 14px;
+  background: var(--orange);
+  color: #fff;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-family: 'Oswald', sans-serif;
+}
+
+.design-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);   /* desktop: 4 columns */
+  gap: 20px;
+}
+.design-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  box-shadow: var(--shadow);
+  transition: transform .25s, box-shadow .25s;
+}
+.design-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 16px 40px rgba(0,0,0,.25);
+}
+.design-card__image-wrap {
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-direction: column;
+  padding: 16px;
+  text-align: center;
+}
+.design-card__icon {
+  font-size: 64px;
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -60%);
+  filter: drop-shadow(0 4px 14px rgba(0,0,0,.35));
+}
+.design-card__name-overlay {
+  position: relative;
+  z-index: 2;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  letter-spacing: .04em;
+  line-height: 1.05;
+  color: #fff;
+  text-transform: uppercase;
+  text-shadow: 0 2px 10px rgba(0,0,0,.55);
+}
+.design-card__image-wrap::after {
+  /* subtle dark gradient at the bottom so the name stays readable */
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(0,0,0,.45) 100%);
+  z-index: 3;
+  pointer-events: none;
+}
+/* The real design image — sits on TOP of the fallback tile and the
+   dark gradient, filling the whole square. */
+.design-card__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #fff;          /* DTF designs are printed on white */
+  padding: 8px;
+  z-index: 4;
+}
+.design-card__info {
+  padding: 14px 16px 16px;
+  display: flex; flex-direction: column;
+  gap: 8px; flex: 1;
+}
+.design-card__title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 19px;
+  letter-spacing: .03em;
+  line-height: 1.1;
+  color: var(--text);
+}
+.design-card__description {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.45;
+  flex: 1;
+}
+.design-card__tags { display: flex; flex-wrap: wrap; gap: 6px }
+.design-card__tags .tag {
+  font-size: 11px;
+  letter-spacing: .04em;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--blue) 14%, transparent);
+  color: var(--text);
+  text-transform: lowercase;
+}
+.design-card__footer {
+  margin-top: 4px;
+}
+.design-card__cta {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 14px !important;
+  padding: 10px 14px !important;
+  letter-spacing: .06em;
+}
+
+
+/* ============ SHOP PAGE =====================================
+   Theme cards + product (blank apparel) rows with size pills and
+   color swatches.
+   =============================================================== */
+
+/* Theme category grid */
+.themes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 18px;
+}
+.theme-card {
+  cursor: pointer;
+}
+.theme-inner {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 30px 16px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: transform .3s, border-color .3s, box-shadow .3s;
+  box-shadow: var(--shadow);
+}
+.theme-inner::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 0%, var(--tint, var(--orange)), transparent 70%);
+  opacity: 0;
+  transition: opacity .3s;
+}
+.theme-card:hover .theme-inner {
+  transform: translateY(-6px);
+  border-color: var(--tint, var(--orange));
+  box-shadow: 0 12px 32px color-mix(in srgb, var(--tint, var(--orange)) 40%, transparent);
+}
+.theme-card:hover .theme-inner::before { opacity: .25 }
+.theme-inner .ico {
+  font-size: 48px;
+  margin-bottom: 8px;
+  position: relative; z-index: 2;
+}
+.theme-inner .lbl {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text);
+  position: relative; z-index: 2;
+}
+
+/* Product rows (plain apparel) */
+.products {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.product {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 36px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px;
+  box-shadow: var(--shadow);
+}
+.product-visuals {
+  /* "--count" comes from the JSX (how many colors this item has).
+     If there's 2-3 colors we use bigger cells; if many, smaller.   */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 14px;
+  align-items: start;
+}
+.mock-wrap {
+  background:
+    repeating-linear-gradient(45deg,
+      color-mix(in srgb, var(--text) 5%, transparent),
+      color-mix(in srgb, var(--text) 5%, transparent) 6px,
+      transparent 6px, transparent 12px);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 14px 10px;
+  aspect-ratio: 1/1.15;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 6px;
+  transition: transform .25s, box-shadow .25s;
+}
+.mock-wrap:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0,0,0,.18);
+}
+.mockup { width: 100%; height: 100%; max-height: 180px }
+.mock-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 12px;
+  letter-spacing: .12em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.product-info h3 {
+  font-size: 28px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.product-info .muted { color: var(--muted); margin-bottom: 18px }
+.opt-group { margin-bottom: 18px }
+.opt-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  letter-spacing: .15em;
+  color: var(--orange);
+  margin-bottom: 8px;
+}
+.sizes { display: flex; flex-wrap: wrap; gap: 8px }
+.size-pill {
+  padding: 6px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  letter-spacing: .1em;
+  color: var(--text);
+  transition: all .2s;
+}
+.size-pill:hover {
+  border-color: var(--orange);
+  color: var(--orange);
+}
+.swatches { display: flex; flex-wrap: wrap; gap: 10px }
+.swatch {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  cursor: pointer;
+  transition: transform .2s, border-color .2s;
+}
+.swatch:hover {
+  transform: scale(1.15);
+  border-color: var(--orange);
+}
+
+/* Storefront photo on the About page */
+.store-photo-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: var(--bg-alt);
+  overflow: hidden;
+}
+.store-photo {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+.store-photo-fallback {
+  display: none;
+  position: absolute; inset: 0;
+  flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  color: var(--muted);
+  padding: 20px;
+  background:
+    radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--orange) 25%, transparent), transparent 60%),
+    radial-gradient(circle at 70% 70%, color-mix(in srgb, var(--blue) 25%, transparent), transparent 60%),
+    var(--bg-alt);
+}
+.store-photo-fallback div:first-child { font-size: 48px; margin-bottom: 8px }
+.store-photo-fallback p {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: .1em;
+  color: var(--text);
+  text-transform: uppercase;
+}
+.store-photo-fallback small {
+  font-size: 12px;
+  margin-top: 6px;
+}
+.store-photo-fallback code {
+  background: color-mix(in srgb, var(--orange) 20%, transparent);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--text);
+}
+.store-photo-wrap.no-photo .store-photo-fallback { display: flex }
+
+
+/* ============ 8. CUSTOMIZE PAGE + FORM =======================  */
+.categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 18px;
+}
+.cat-card {
+  padding: 30px 18px;
+  text-align: center;
+  border-radius: 10px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  cursor: pointer;
+  transition: all .3s;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.cat-card::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--orange), var(--blue));
+  opacity: 0;
+  transition: opacity .3s;
+}
+.cat-card:hover::before { opacity: .12 }
+.cat-card:hover { transform: translateY(-4px); border-color: var(--orange) }
+.cat-card .ico { font-size: 42px; margin-bottom: 10px; position: relative; z-index: 2 }
+.cat-card h4 {
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  position: relative; z-index: 2;
+}
+
+/* Inquiry form section */
+.form-section {
+  padding: 80px 0;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 15% 15%, rgba(255,107,0,.18), transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(0,170,255,.18), transparent 40%),
+    var(--bg);
+}
+.form-title {
+  text-align: center;
+  font-family: 'Edo SZ', 'Permanent Marker', cursive;
+  font-size: clamp(40px, 6vw, 72px);
+  text-transform: none;
+  margin-bottom: 14px;
+  text-shadow: 3px 3px 0 var(--orange);
+}
+.lead {
+  text-align: center;
+  color: var(--muted);
+  margin-bottom: 40px;
+  font-size: 18px;
+}
+.inquiry {
+  max-width: 780px;
+  margin: 0 auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 40px;
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+}
+.inquiry .row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.inquiry label {
+  display: block;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 15px;
+  letter-spacing: .1em;
+  color: var(--orange);
+  margin-bottom: 6px;
+}
+.inquiry .field { margin-bottom: 18px }
+.inquiry input,
+.inquiry select,
+.inquiry textarea {
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  border-radius: 6px;
+  transition: border-color .25s, box-shadow .25s;
+}
+.inquiry input:focus,
+.inquiry select:focus,
+.inquiry textarea:focus {
+  outline: none;
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(255,107,0,.15);
+}
+.inquiry textarea { min-height: 130px; resize: vertical }
+.inquiry .hint { font-size: 13px; color: var(--muted); margin-top: 4px }
+
+/* Drag-and-drop area */
+.drop-zone {
+  display: block;
+  border: 2px dashed var(--blue);
+  border-radius: 10px;
+  padding: 30px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .25s;
+  background: color-mix(in srgb, var(--blue) 6%, transparent);
+}
+.drop-zone:hover,
+.drop-zone.dragover {
+  border-color: var(--orange);
+  background: color-mix(in srgb, var(--orange) 8%, transparent);
+}
+.drop-zone p { color: var(--muted); margin-bottom: 6px }
+.drop-zone p.small { font-size: 13px }
+.drop-zone .file-name {
+  color: var(--orange);
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.submit-row { text-align: center; margin-top: 24px }
+.btn:disabled { opacity: .6; cursor: not-allowed }
+.form-error {
+  margin-top: 14px;
+  color: #fff;
+  background: #c0392b;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  display: inline-block;
+}
+.post-note {
+  text-align: center;
+  color: var(--muted);
+  margin-top: 16px;
+  font-size: 14px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Success message after submit */
+.success-msg {
+  background: linear-gradient(135deg, var(--orange), var(--blue));
+  color: #fff;
+  padding: 50px 40px;
+  border-radius: 14px;
+  text-align: center;
+  max-width: 780px;
+  margin: 0 auto;
+  box-shadow: var(--shadow);
+  animation: pop .5s;
+}
+@keyframes pop {
+  from { opacity: 0; transform: scale(.9) }
+  to   { opacity: 1; transform: scale(1) }
+}
+.success-msg h3 {
+  font-size: 48px;
+  font-family: 'Edo SZ', 'Permanent Marker', cursive;
+  text-transform: none;
+  margin-bottom: 12px;
+}
+.success-msg .big { font-size: 18px }
+.success-msg .small-note { margin-top: 18px; font-size: 15px; opacity: .9 }
+
+
+/* ============ 9. CONTACT PAGE ================================  */
+.big-script {
+  /* Bold, clean, easy-to-read font (was a hard-to-read brush script) */
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 52px;
+  letter-spacing: .03em;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.big-script.break {
+  /* email: keep on one line where possible, wrap only if it must */
+  font-size: 34px;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+.orange-text { color: var(--orange) }
+.blue-text   { color: var(--blue)   }
+
+.walk-in {
+  text-align: center;
+  margin-top: 60px;
+}
+.walk-in h2 {
+  font-size: 42px;
+  text-transform: uppercase;
+}
+.walk-in p {
+  color: var(--muted);
+  margin: 14px 0 24px;
+  font-size: 18px;
+}
+
+
+/* ============ 10. FOOTER =====================================  */
+footer {
+  background: var(--footer-bg);
+  color: var(--footer-tx);
+  padding: 60px 0 30px;
+  border-top: 4px solid var(--orange);
+  position: relative;
+  overflow: hidden;
+}
+footer::before {
+  content: "";
+  position: absolute;
+  width: 400px; height: 400px;
+  border-radius: 50%;
+  background: var(--blue);
+  filter: blur(120px);
+  opacity: .15;
+  top: -200px; right: -100px;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 40px;
+  margin-bottom: 30px;
+  position: relative;
+  z-index: 2;
+}
+footer h4 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  color: var(--orange);
+  margin-bottom: 14px;
+  letter-spacing: .1em;
+}
+.brand-foot {
+  font-family: 'Edo SZ', 'Permanent Marker', cursive;
+  font-size: 38px;
+  color: #fff;
+  text-shadow: 2px 2px 0 var(--orange);
+}
+.tag {
+  font-family: 'Satisfy', cursive;
+  color: #bbb;
+  font-size: 20px;
+  margin-top: 6px;
+}
+footer a, footer p {
+  color: var(--footer-tx);
+  font-size: 15px;
+  margin-bottom: 6px;
+  display: block;
+}
+footer a:hover { color: var(--orange) }
+.social { display: flex; gap: 12px; margin-top: 12px }
+.social a {
+  width: 38px; height: 38px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+  transition: all .25s;
+}
+.social a:hover { background: var(--orange); border-color: var(--orange) }
+.copy {
+  border-top: 1px dashed rgba(255,255,255,.15);
+  padding-top: 20px;
+  text-align: center;
+  color: #888;
+  font-size: 13px;
+  position: relative;
+  z-index: 2;
+}
+
+
+/* ============ SCROLL PROGRESS BAR + CUSTOM CURSOR ============= */
+#scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--orange), var(--pink), var(--blue));
+  z-index: 200;
+  transition: width .12s ease-out;
+  box-shadow: 0 0 12px rgba(255,107,0,.6);
+}
+
+/* ============ ACCESSIBILITY ESSENTIALS ========================
+   Per UI/UX Pro Max checklist:
+   - Visible focus rings on every interactive element
+   - Skip-to-main link for keyboard users
+   - Respect prefers-reduced-motion (some folks get motion sick)
+   =============================================================== */
+
+/* Skip link — hidden off-screen until a keyboard user tabs to it. */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 12px;
+  background: var(--orange);
+  color: #fff;
+  padding: 10px 16px;
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: .1em;
+  border-radius: 4px;
+  z-index: 300;
+  transition: top .2s;
+}
+.skip-link:focus {
+  top: 12px;
+  outline: 3px solid var(--blue);
+  outline-offset: 2px;
+}
+
+/* Universal focus ring — visible on keyboard focus, hidden on mouse
+   click. Meets WCAG: visible, 2-3px, high contrast. */
+:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+button, a, input, select, textarea {
+  /* Pure click should not show the ring — only keyboard focus */
+  outline: none;
+}
+
+/* Reduced-motion: kill big animations for visitors who request it */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .drop, .float-shirt, .blob, .marquee-track, .brand {
+    animation: none !important;
+  }
+}
+
+/* ============ PINNED BILLBOARD =============================== */
+.billboard {
+  padding: 120px 0;
+  background: var(--bg-alt);
+  position: relative;
+}
+.billboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+.billboard-sticky {
+  position: sticky;
+  top: 120px;
+}
+.billboard-sticky .kicker {
+  color: var(--orange);
+  font-family: 'Edo SZ', 'Permanent Marker', cursive;
+  font-size: 22px;
+  margin-bottom: 14px;
+}
+.billboard-sticky h2 {
+  font-size: clamp(48px, 7vw, 96px);
+  text-transform: uppercase;
+  line-height: .95;
+}
+.billboard-body {
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+  padding-top: 20px;
+}
+.billboard-body h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  color: var(--orange);
+  margin-bottom: 10px;
+  letter-spacing: .1em;
+}
+.billboard-body p {
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+/* ============ HALL OF FAME (horizontal scroll) =============== */
+.hof {
+  padding: 90px 0;
+  background: var(--bg);
+  overflow: hidden;
+}
+.hof-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 36px;
+}
+.hof-head h2 {
+  font-size: clamp(36px, 5vw, 56px);
+  text-transform: uppercase;
+}
+.hof-head .kicker {
+  color: var(--orange);
+  font-family: 'Edo SZ', 'Permanent Marker', cursive;
+  font-size: 22px;
+  margin-bottom: 6px;
+}
+.hof-head .muted {
+  color: var(--muted);
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: .2em;
+  font-size: 14px;
+}
+.hof-track {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 0 24px;
+  padding: 10px 24px 30px;
+  /* Hide the ugly default scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: var(--orange) transparent;
+}
+.hof-track::-webkit-scrollbar { height: 8px }
+.hof-track::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, var(--orange), var(--blue));
+  border-radius: 4px;
+}
+.hof-card {
+  flex: 0 0 auto;
+  width: clamp(280px, 32vw, 420px);
+  aspect-ratio: 3/4;
+  border-radius: 14px;
+  padding: 24px;
+  position: relative;
+  scroll-snap-align: start;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,.35);
+  transition: transform .4s ease;
+}
+.hof-card:hover { transform: translateY(-8px) scale(1.02) }
+.hof-card::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 30%, rgba(0,0,0,.85) 100%);
+}
+.hof-card.c1 { background: linear-gradient(135deg, #FF6B00, #E91E63) }
+.hof-card.c2 { background: linear-gradient(135deg, #00AAFF, #0066cc) }
+.hof-card.c3 { background: linear-gradient(135deg, #FF2D87, #7a1e8a) }
+.hof-card.c4 { background: linear-gradient(135deg, #FF6B00, #FFD700) }
+.hof-card.c5 { background: linear-gradient(135deg, #00AAFF, #FF2D87) }
+.hof-card.c6 { background: linear-gradient(135deg, #222,    #FF6B00) }
+.hof-card.c7 { background: linear-gradient(135deg, #0a0a0a, #00AAFF) }
+.hof-card.c8 { background: linear-gradient(135deg, #FF2D87, #FF6B00) }
+/* Real photo layer (sits above the gradient, below the text) */
+.hof-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+/* Big decorative icon shown when there's no photo */
+.hof-icon {
+  position: absolute;
+  top: 46%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 120px;
+  opacity: .9;
+  z-index: 1;
+  filter: drop-shadow(0 6px 20px rgba(0,0,0,.4));
+}
+.hof-num {
+  position: relative; z-index: 2;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(80px, 12vw, 140px);
+  color: #fff;
+  opacity: .85;
+  line-height: 1;
+  position: absolute; top: 18px; left: 24px;
+  text-shadow: 0 4px 20px rgba(0,0,0,.4);
+}
+.hof-foot {
+  position: relative; z-index: 2;
+}
+.hof-tag {
+  display: inline-block;
+  padding: 5px 12px;
+  background: #fff;
+  color: #000;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 12px;
+  letter-spacing: .15em;
+  margin-bottom: 10px;
+}
+.hof-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(24px, 3vw, 36px);
+  color: #fff;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+/* ============ SHIRT MOCKUP HOVER-SWAP ========================= */
+/* By default we show the "Your design here" placeholder.
+   On hover, we fade out the placeholder and fade in the colorful
+   sample design — same trick as the helmet hover on landonorris.   */
+.mockup .m-hover {
+  opacity: 0;
+  transform: scale(.85);
+  transform-origin: 120px 135px;
+  transition: opacity .35s ease, transform .35s ease;
+}
+.mockup .m-base {
+  transition: opacity .35s ease;
+}
+.mock-wrap:hover .mockup .m-base  { opacity: 0 }
+.mock-wrap:hover .mockup .m-hover { opacity: 1; transform: scale(1) }
+
+
+/* ============ 11. SCROLL REVEAL + RESPONSIVE =================  */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity .8s ease, transform .8s ease;
+}
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Phones */
+@media (max-width: 820px) {
+  .nav-links { display: none }
+  .hamburger { display: inline-flex; align-items: center; justify-content: center }
+  .story { grid-template-columns: 1fr }
+  .inquiry { padding: 24px }
+  .inquiry .row { grid-template-columns: 1fr }
+  .brand-text { font-size: 26px }
+  /* keep the navbar logo from getting too tall on small phones */
+  .navbar .logo-tiedye,
+  .navbar .logo-tiedye .logo-sizer { height: 60px !important }
+  .bulk-inner { grid-template-columns: 1fr; text-align: center }
+  .bulk-ico { margin: 0 auto }
+  .stats { grid-template-columns: repeat(2, 1fr) }
+  .float-shirt { display: none }
+  .product { grid-template-columns: 1fr }
+  .product-visuals { grid-template-columns: repeat(2, 1fr) }
+  .billboard-grid { grid-template-columns: 1fr; gap: 40px }
+  .billboard-sticky { position: relative; top: 0 }
+  .billboard-body { gap: 40px }
+  .hof-card { width: 75vw }
+  .design-grid { grid-template-columns: 1fr }   /* phones: 1 column */
+}
+
+/* Tablet: 2 columns of design cards */
+@media (min-width: 521px) and (max-width: 980px) {
+  .design-grid { grid-template-columns: repeat(2, 1fr) }
+}
+/* Medium desktop: 3 columns */
+@media (min-width: 981px) and (max-width: 1200px) {
+  .design-grid { grid-template-columns: repeat(3, 1fr) }
+}
+
+/* The theme card is now a <button> — strip default button styling
+   so it still looks like a card. */
+.theme-inner {
+  width: 100%;
+  font: inherit;
+  cursor: pointer;
+  display: block;
+}

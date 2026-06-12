@@ -1,0 +1,9 @@
+Put your birthdays designs in THIS folder.
+
+Name them by NUMBER only, in order:
+  1.jpg
+  2.jpg
+  3.jpg  ... and so on (no gaps).
+
+JPG, PNG, or WEBP all work. After adding, refresh the site
+(or run 'npm run build' for the double-click version).
