@@ -505,15 +505,19 @@ html.light .hero h1 { color: #111 }
 }
 .marquee-track {
   display: flex;
+  width: max-content;             /* track is as wide as its content... */
   white-space: nowrap;
   font-family: 'Bebas Neue', sans-serif;
   font-size: 22px;
   letter-spacing: .25em;          /* wider letter spacing = less packed */
-  animation: scroll 48s linear infinite;  /* slower scroll              */
+  animation: scroll 22s linear infinite;
+}
+.marquee-track span {
+  flex-shrink: 0;                 /* ...so each copy keeps its full width */
 }
 @keyframes scroll {
   from { transform: translateX(0) }
-  to   { transform: translateX(-50%) }
+  to   { transform: translateX(-50%) }  /* exactly one copy = seamless loop */
 }
 
 /* ============ BULK ORDERS BANNER =============================  */
@@ -1867,7 +1871,7 @@ button, a, input, select, textarea {
   .design-grid { grid-template-columns: 1fr }   /* phones: 1 column */
 
   /* 1) Marquee scrolls noticeably faster on phones */
-  .marquee-track { animation-duration: 20s }
+  .marquee-track { animation-duration: 14s }
 
   /* 2) Reviews stack cleanly (one per row) and the big decorative
         quote mark is shrunk so it can't overlap the card above it */
