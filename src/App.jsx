@@ -8,8 +8,19 @@
 // ---------------------------------------------------------------
 
 import { useEffect } from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { ThemeProvider } from './ThemeContext.jsx'
+
+// Whenever the page (route) changes, jump to the very top. This makes
+// clicking the logo — or any nav link — land you at the top of the
+// new page instead of keeping your old scroll position.
+function ScrollToTop() {
+  const { pathname } = useLocation()
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+  return null
+}
 
 import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
@@ -47,6 +58,7 @@ export default function App() {
       {/* The little bar at the very top that fills as you scroll */}
       <div id="scroll-progress" />
 
+      <ScrollToTop />
       <Navbar />
 
       <main id="main">

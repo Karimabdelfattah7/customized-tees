@@ -240,18 +240,6 @@ h1, h2, h3, h4 {
   0%   { background-position: 0% 50% }
   100% { background-position: 200% 50% }
 }
-/* Footer logo image (a bit bigger) */
-.brand-logo-foot {
-  height: 60px;
-  width: auto;
-  display: block;
-}
-/* Footer fallback text — same brush-script, tilted style */
-.brand-foot-text {
-  font-family: 'Kaushan Script', 'Satisfy', cursive;
-  display: inline-block;
-  transform: skewX(-6deg) rotate(-2deg);
-}
 .nav-links {
   list-style: none;
   display: flex;
@@ -790,6 +778,15 @@ html.light .hero h1 { color: #111 }
   max-width: 900px;
   margin: 0 auto;
   text-align: center;
+}
+/* Desktop only: force all 6 care icons onto a single row.
+   (Phones keep the responsive layout above — unchanged.) */
+@media (min-width: 821px) {
+  .care-grid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 20px;
+    max-width: 1080px;
+  }
 }
 .care-item .icon {
   width: 80px; height: 80px;
@@ -1552,6 +1549,7 @@ footer h4 {
   font-size: 38px;
   color: #fff;
   text-shadow: 2px 2px 0 var(--orange);
+  display: inline-block;   /* it's a link now — keep it hugging the logo */
 }
 .tag {
   font-family: 'Satisfy', cursive;
@@ -1867,6 +1865,18 @@ button, a, input, select, textarea {
   .billboard-body { gap: 40px }
   .hof-card { width: 75vw }
   .design-grid { grid-template-columns: 1fr }   /* phones: 1 column */
+
+  /* 1) Marquee scrolls noticeably faster on phones */
+  .marquee-track { animation-duration: 20s }
+
+  /* 2) Reviews stack cleanly (one per row) and the big decorative
+        quote mark is shrunk so it can't overlap the card above it */
+  .reviews { grid-template-columns: 1fr }
+  .review::before { font-size: 64px; top: -6px }
+
+  /* 3) Footer: two columns so Quick Links / Locations / Contact fill
+        the empty right side instead of all stacking on the left */
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 28px 20px }
 }
 
 /* Tablet: 2 columns of design cards */

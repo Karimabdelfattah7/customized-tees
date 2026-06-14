@@ -61,7 +61,12 @@ export default function Navbar() {
         <div className="navbar-inner">
           {/* Store name on the left — tie-dye lettering from your logo
               image (or styled text if the image isn't added yet). */}
-          <NavLink to="/" className="brand" aria-label="Customized Tees — home">
+          <NavLink
+            to="/"
+            className="brand"
+            aria-label="Customized Tees — home"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          >
             <Logo height={84} />
           </NavLink>
 

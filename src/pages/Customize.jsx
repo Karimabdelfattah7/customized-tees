@@ -2,16 +2,14 @@
 // ---------------------------------------------------------------
 // The most important page: where customers send us their idea.
 // Contains:
-//   - Category buttons (just visual — clicking does nothing yet)
+//   - Category buttons (just visual)
 //   - A sample-designs gallery
 //   - The big inquiry form (name, phone, email, occasion, idea,
-//     optional file upload). When the customer hits "Send My Idea"
-//     the form is hidden and a thank-you message is shown.
+//     optional file upload).
 //
-// IMPORTANT: this page does NOT actually email anyone yet. To make
-// the form really send to customizedtees502@gmail.com you need a
-// small backend service (for example Formspree, Netlify Forms, or
-// a Node/Express server). Ask a developer to plug one in.
+// The form really works: it emails submissions to the store via
+// Web3Forms, and any attached file is uploaded and a download link
+// is included. See the settings at the top of the component below.
 // ---------------------------------------------------------------
 
 import { useState } from 'react'
@@ -154,7 +152,8 @@ export default function Customize() {
       const body =
         `Name: ${data.get('name')}\n` +
         `Phone: ${data.get('phone')}\n` +
-        `Email: ${data.get('email') || '(none)'}\n` +
+        `Email: ${data.get('email')}\n` +
+        `Quantity: ${data.get('quantity')}\n` +
         `Occasion: ${data.get('occasion')}\n\n` +
         `Design idea:\n${data.get('idea')}\n\n` +
         `(Note: please attach your reference image to this email if you have one.)`
@@ -291,9 +290,16 @@ export default function Customize() {
                   </div>
                 </div>
 
-                <div className="field">
-                  <label>Email (optional)</label>
-                  <input type="email" name="email" placeholder="you@example.com" />
+                <div className="row">
+                  <div className="field">
+                    <label>Email *</label>
+                    <input type="email" name="email" required placeholder="you@example.com" />
+                  </div>
+                  <div className="field">
+                    <label>Quantity *</label>
+                    <input type="number" name="quantity" required min="1" defaultValue="1" />
+                    <div className="hint">How many pieces do you need?</div>
+                  </div>
                 </div>
 
                 <div className="field">

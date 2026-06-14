@@ -14,10 +14,16 @@ export default function Footer() {
         <div className="footer-grid">
           {/* Column 1: Brand + tagline + social icons */}
           <div>
-            {/* Tie-dye logo (from logo.png) with styled-text fallback */}
-            <div className="brand-foot">
+            {/* Tie-dye logo (from logo.png) with styled-text fallback.
+                Clicking it goes to the top of the home page. */}
+            <Link
+              to="/"
+              className="brand-foot"
+              aria-label="Customized Tees — home"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            >
               <Logo height={96} />
-            </div>
+            </Link>
             <div className="tag">Custom Tees. Your Way.</div>
             {/* Social links — open in a new tab. Update the URLs if the
                 store's handle ever changes. Uses real SVG icons (not
@@ -59,11 +65,24 @@ export default function Footer() {
             <Link to="/contact">Contact</Link>
           </div>
 
-          {/* Column 3: Both store locations */}
+          {/* Column 3: Both store locations — each address opens Google
+              Maps in a new tab when clicked. */}
           <div>
             <h4>Locations</h4>
-            <p>5000 Shelbyville Rd #1760,<br />St Matthews, KY 40207</p>
-            <p>4801 Outer Loop a268,<br />Louisville, KY 40219</p>
+            <a
+              href="https://maps.google.com/?q=5000+Shelbyville+Rd+%231760+St+Matthews+KY+40207"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              5000 Shelbyville Rd #1760,<br />St Matthews, KY 40207
+            </a>
+            <a
+              href="https://maps.google.com/?q=4801+Outer+Loop+a268+Louisville+KY+40219"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              4801 Outer Loop a268,<br />Louisville, KY 40219
+            </a>
           </div>
 
           {/* Column 4: Contact links (clickable on phone) */}
