@@ -83,9 +83,34 @@ async function uploadReferenceFile(file) {
   return url
 }
 
+// ===============================================================
+//  SIZES & COLORS  (edit these lists to change what's offered)
+// ===============================================================
+// Sizes are grouped. Each group offers different colors.
+const SIZE_GROUPS = [
+  { label: 'Baby',  sizes: ['Newborn', '3 Months', '6 Months', '12 Months'] },
+  { label: 'Kids',  sizes: ['Kids XS', 'Kids S', 'Kids M', 'Kids L'] },
+  { label: 'Adult', sizes: ['S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL', 'XXXXXL'] }
+]
+const BABY_SIZES = SIZE_GROUPS[0].sizes
+const KIDS_SIZES = SIZE_GROUPS[1].sizes
+
+// Returns the colors available for a given size.
+function colorsForSize(size) {
+  if (!size) return []
+  if (BABY_SIZES.includes(size)) return ['White']                       // babies: white only
+  if (KIDS_SIZES.includes(size)) return ['White', 'Black', 'Blue', 'Pink', 'Other']
+  // adult sizes — the store's full color range
+  return ['White', 'Black', 'Grey', 'Pink', 'Red', 'Royal Blue', 'Orange', 'Purple', 'Other']
+}
+
 export default function Customize() {
   // Was the form successfully sent? (true / false)
   const [sent, setSent] = useState(false)
+
+  // Selected size + color (color choices depend on the size)
+  const [size, setSize] = useState('')
+  const [color, setColor] = useState('')
 
   // If the customer arrived here by clicking "Order This Design" on
   // the Shop page, the design name is in the URL (?design=...). We
@@ -154,6 +179,8 @@ export default function Customize() {
         `Phone: ${data.get('phone')}\n` +
         `Email: ${data.get('email')}\n` +
         `Quantity: ${data.get('quantity')}\n` +
+        `Size: ${data.get('size')}\n` +
+        `Color: ${data.get('color') === 'Other' ? data.get('custom_color') : data.get('color')}\n` +
         `Occasion: ${data.get('occasion')}\n\n` +
         `Design idea:\n${data.get('idea')}\n\n` +
         `(Note: please attach your reference image to this email if you have one.)`
@@ -299,6 +326,49 @@ export default function Customize() {
                     <label>Quantity *</label>
                     <input type="number" name="quantity" required min="1" defaultValue="1" />
                     <div className="hint">How many pieces do you need?</div>
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="field">
+                    <label>Size *</label>
+                    <select
+                      name="size"
+                      required
+                      value={size}
+                      onChange={(e) => { setSize(e.target.value); setColor('') }}
+                    >
+                      <option value="" disabled>Choose a size...</option>
+                      {SIZE_GROUPS.map(g => (
+                        <optgroup key={g.label} label={g.label}>
+                          {g.sizes.map(s => <option key={s} value={s}>{s}</option>)}
+                        </optgroup>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="field">
+                    <label>Color *</label>
+                    <select
+                      name="color"
+                      required
+                      value={color}
+                      onChange={(e) => setColor(e.target.value)}
+                      disabled={!size}
+                    >
+                      <option value="" disabled>
+                        {size ? 'Choose a color...' : 'Pick a size first'}
+                      </option>
+                      {colorsForSize(size).map(c => <option key={c} value={c}>{c}</option>)}
+                    </select>
+                    {color === 'Other' && (
+                      <input
+                        type="text"
+                        name="custom_color"
+                        required
+                        placeholder="Tell us the color you want"
+                        style={{ marginTop: '8px' }}
+                      />
+                    )}
                   </div>
                 </div>
 
