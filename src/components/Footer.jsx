@@ -43,7 +43,7 @@ export default function Footer() {
                 </svg>
               </a>
               <a
-                href="https://www.facebook.com/customizedtees502"
+                href="https://www.facebook.com/customized.shirts.524"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Customized Tees on Facebook"
