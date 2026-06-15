@@ -15,8 +15,20 @@ import { ThemeProvider } from './ThemeContext.jsx'
 // scroll to a specific section (via state.scrollTo). For example, the
 // "Start Designing" / "Start Bulk Order" buttons send you straight to
 // the order form instead of the top of the Customize page.
+// Friendly browser-tab title per page (good for SEO + bookmarks).
+const PAGE_TITLES = {
+  '/':          'Customized Tees — Custom Apparel in Louisville, KY',
+  '/shop':      'Shop Designs — Customized Tees',
+  '/customize': 'Customize Your Order — Customized Tees',
+  '/about':     'Find Us — Customized Tees',
+  '/contact':   'Contact — Customized Tees'
+}
+
 function ScrollToTop() {
   const { pathname, state } = useLocation()
+  useEffect(() => {
+    document.title = PAGE_TITLES[pathname] || 'Customized Tees'
+  }, [pathname])
   useEffect(() => {
     const target = state?.scrollTo
     if (target) {
