@@ -623,6 +623,11 @@ html.light .hero h1 { color: #111 }
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 18px;
 }
+/* Desktop only: the home "Recent Work" gallery shows all 6 on one row.
+   Phones keep the responsive layout above — unchanged. */
+@media (min-width: 821px) {
+  .gallery-6 { grid-template-columns: repeat(6, 1fr); }
+}
 .gallery .card {
   aspect-ratio: 1/1;
   border-radius: 8px;

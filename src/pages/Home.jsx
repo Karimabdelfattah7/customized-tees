@@ -235,7 +235,7 @@ export default function Home() {
             </div>
           </Reveal>
 
-          <div className="gallery">
+          <div className="gallery gallery-6">
             {recentWork.map((w, i) => (
               <Reveal key={i} className={'card c' + (i + 1)}>
                 <span className={'cbadge ' + w.badge}>{w.tag}</span>
