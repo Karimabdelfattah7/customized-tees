@@ -21,6 +21,12 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="theme-color" content="#0a0a0a" />
 
+    <!-- "Add to Home Screen" support (install the site like an app) -->
+    <link rel="manifest" href="manifest.webmanifest" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Customized Tees" />
+
     <!--
       Google Fonts:
       - Bebas Neue: bold all-caps font used for headings
@@ -38,5 +44,14 @@
     <!-- React renders the whole website inside this empty div -->
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+
+    <!-- Register the service worker (enables install + offline fallback) -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('sw.js').catch(() => {})
+        })
+      }
+    </script>
   </body>
 </html>

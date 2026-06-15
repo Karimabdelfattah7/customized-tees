@@ -7,6 +7,28 @@
 
 import Reveal from '../components/Reveal.jsx'
 
+// Store hours (same for both locations):
+//   Mon–Sat 10am–9pm, Sun 12pm–6pm  (Louisville = US Eastern time)
+// This badge shows live "Open now" / "Closed" based on the customer's
+// current time converted to Eastern.
+function OpenBadge() {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/New_York', weekday: 'short', hour: '2-digit', hour12: false
+  }).formatToParts(new Date())
+  const day = parts.find(p => p.type === 'weekday').value
+  let hour = parseInt(parts.find(p => p.type === 'hour').value, 10)
+  if (hour === 24) hour = 0
+  const isSun = day === 'Sun'
+  const openH = isSun ? 12 : 10
+  const closeH = isSun ? 18 : 21
+  const open = hour >= openH && hour < closeH
+  return (
+    <span className={'open-badge ' + (open ? 'open' : 'closed')}>
+      <span className="dot" /> {open ? 'Open now' : 'Closed'}
+    </span>
+  )
+}
+
 export default function About() {
   return (
     <div>
@@ -82,7 +104,7 @@ export default function About() {
               />
               <div className="body">
                 <p><strong>Address:</strong> 5000 Shelbyville Rd #1760, St Matthews, KY 40207</p>
-                <p><strong>Hours:</strong> Mon–Sat 10am–9pm · Sun 12pm–6pm</p>
+                <p><strong>Hours:</strong> Mon–Sat 10am–9pm · Sun 12pm–6pm <OpenBadge /></p>
                 <p><strong>Phone:</strong> 502-232-3703</p>
                 <p><strong>Email:</strong> customizedtees502@gmail.com</p>
                 <a
@@ -131,7 +153,7 @@ export default function About() {
               />
               <div className="body">
                 <p><strong>Address:</strong> 4801 Outer Loop a268, Louisville, KY 40219</p>
-                <p><strong>Hours:</strong> Mon–Sat 10am–9pm · Sun 12pm–6pm</p>
+                <p><strong>Hours:</strong> Mon–Sat 10am–9pm · Sun 12pm–6pm <OpenBadge /></p>
                 <p><strong>Phone:</strong> 502-232-3703</p>
                 <p><strong>Email:</strong> customizedtees502@gmail.com</p>
                 <a

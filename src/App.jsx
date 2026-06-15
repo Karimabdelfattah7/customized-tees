@@ -48,6 +48,7 @@ function ScrollToTop() {
 
 import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
+import FloatingActions from './components/FloatingActions.jsx'
 
 import Home from './pages/Home.jsx'
 import Shop from './pages/Shop.jsx'
@@ -99,6 +100,7 @@ export default function App() {
       </main>
 
       <Footer />
+      <FloatingActions />
     </ThemeProvider>
   )
 }
