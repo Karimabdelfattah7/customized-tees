@@ -303,7 +303,7 @@ export default function Customize() {
       </section>
 
       {/* The inquiry form */}
-      <section className="form-section">
+      <section className="form-section" id="order-form">
         <div className="container">
           {/* Show either the form OR the thank-you message */}
           {!sent ? (

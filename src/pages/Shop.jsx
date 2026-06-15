@@ -217,7 +217,7 @@ export default function Shop() {
                       </div>
                     </div>
 
-                    <Link className="btn" to="/customize">Customize This</Link>
+                    <Link className="btn" to="/customize" state={{ scrollTo: 'order-form' }}>Customize This</Link>
                   </div>
                 </Reveal>
               )
@@ -238,7 +238,7 @@ export default function Shop() {
                 Bigger order? Even better. We print fast — usually same day.
               </p>
             </div>
-            <Link className="btn big" to="/customize">Request Bulk Quote</Link>
+            <Link className="btn big" to="/customize" state={{ scrollTo: 'order-form' }}>Request Bulk Quote</Link>
           </Reveal>
         </div>
       </section>

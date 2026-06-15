@@ -68,7 +68,7 @@ export default function Home() {
             Custom printing in under 15 minutes — at both Louisville mall locations.
           </p>
           <div className="cta-row">
-            <Link className="btn" to="/customize">Design Something Custom</Link>
+            <Link className="btn" to="/customize" state={{ scrollTo: 'order-form' }}>Design Something Custom</Link>
             <Link className="btn outline" to="/about">Find Us</Link>
           </div>
 
@@ -104,7 +104,7 @@ export default function Home() {
                 quicker than anyone in town.
               </p>
             </div>
-            <Link className="btn big" to="/customize">Start Bulk Order</Link>
+            <Link className="btn big" to="/customize" state={{ scrollTo: 'order-form' }}>Start Bulk Order</Link>
           </Reveal>
         </div>
       </section>

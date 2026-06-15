@@ -235,6 +235,7 @@ export default function DesignGallery() {
                         <Link
                           className="btn design-card__cta"
                           to={`/customize?design=${encodeURIComponent(d.title)}`}
+                          state={{ scrollTo: 'order-form' }}
                         >
                           Order This Design
                         </Link>

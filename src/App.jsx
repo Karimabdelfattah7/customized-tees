@@ -11,14 +11,26 @@ import { useEffect } from 'react'
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { ThemeProvider } from './ThemeContext.jsx'
 
-// Whenever the page (route) changes, jump to the very top. This makes
-// clicking the logo — or any nav link — land you at the top of the
-// new page instead of keeping your old scroll position.
+// On every page change, jump to the top — UNLESS the link asked us to
+// scroll to a specific section (via state.scrollTo). For example, the
+// "Start Designing" / "Start Bulk Order" buttons send you straight to
+// the order form instead of the top of the Customize page.
 function ScrollToTop() {
-  const { pathname } = useLocation()
+  const { pathname, state } = useLocation()
   useEffect(() => {
+    const target = state?.scrollTo
+    if (target) {
+      // Small delay so the new page is fully laid out, then scroll the
+      // requested section into view.
+      const t = setTimeout(() => {
+        const el = document.getElementById(target)
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        else window.scrollTo(0, 0)
+      }, 80)
+      return () => clearTimeout(t)
+    }
     window.scrollTo(0, 0)
-  }, [pathname])
+  }, [pathname, state])
   return null
 }
 

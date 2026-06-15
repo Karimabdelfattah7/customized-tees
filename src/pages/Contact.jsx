@@ -45,7 +45,7 @@ export default function Contact() {
               Or Just <span className="brand-script accent-orange">Walk In</span>
             </h2>
             <p>Jefferson Mall &nbsp;·&nbsp; St Matthews Mall &nbsp;·&nbsp; Louisville, KY</p>
-            <Link className="btn" to="/customize">Start a Design</Link>
+            <Link className="btn" to="/customize" state={{ scrollTo: 'order-form' }}>Start a Design</Link>
           </Reveal>
         </div>
       </section>
