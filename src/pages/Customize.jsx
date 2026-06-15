@@ -95,8 +95,15 @@ const SIZE_GROUPS = [
 const BABY_SIZES = SIZE_GROUPS[0].sizes
 const KIDS_SIZES = SIZE_GROUPS[1].sizes
 
-// Returns the colors available for a given size.
-function colorsForSize(size) {
+// The garment types we offer. Short Sleeve is the default.
+const GARMENTS = ['Short Sleeve', 'Long Sleeve', 'Hoodie', 'Crew Neck']
+
+// Returns the colors available for a given garment + size.
+function colorsFor(garment, size) {
+  // Long sleeve / hoodie / crew neck come in black, white, grey only.
+  if (garment && garment !== 'Short Sleeve') return ['Black', 'White', 'Grey', 'Other']
+
+  // Short sleeve colors depend on the size group:
   if (!size) return []
   if (BABY_SIZES.includes(size)) return ['White']                       // babies: white only
   if (KIDS_SIZES.includes(size)) return ['White', 'Black', 'Blue', 'Pink', 'Other']
@@ -108,7 +115,8 @@ export default function Customize() {
   // Was the form successfully sent? (true / false)
   const [sent, setSent] = useState(false)
 
-  // Selected size + color (color choices depend on the size)
+  // Selected garment + size + color (color choices depend on both)
+  const [garment, setGarment] = useState('Short Sleeve')
   const [size, setSize] = useState('')
   const [color, setColor] = useState('')
 
@@ -179,6 +187,7 @@ export default function Customize() {
         `Phone: ${data.get('phone')}\n` +
         `Email: ${data.get('email')}\n` +
         `Quantity: ${data.get('quantity')}\n` +
+        `Garment: ${data.get('garment')}\n` +
         `Size: ${data.get('size')}\n` +
         `Color: ${data.get('color') === 'Other' ? data.get('custom_color') : data.get('color')}\n` +
         `Occasion: ${data.get('occasion')}\n\n` +
@@ -329,6 +338,18 @@ export default function Customize() {
                   </div>
                 </div>
 
+                <div className="field">
+                  <label>Garment Type *</label>
+                  <select
+                    name="garment"
+                    required
+                    value={garment}
+                    onChange={(e) => { setGarment(e.target.value); setColor('') }}
+                  >
+                    {GARMENTS.map(g => <option key={g} value={g}>{g}</option>)}
+                  </select>
+                </div>
+
                 <div className="row">
                   <div className="field">
                     <label>Size *</label>
@@ -358,7 +379,7 @@ export default function Customize() {
                       <option value="" disabled>
                         {size ? 'Choose a color...' : 'Pick a size first'}
                       </option>
-                      {colorsForSize(size).map(c => <option key={c} value={c}>{c}</option>)}
+                      {colorsFor(garment, size).map(c => <option key={c} value={c}>{c}</option>)}
                     </select>
                     {color === 'Other' && (
                       <input

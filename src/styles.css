@@ -1121,6 +1121,11 @@ html.dark .loc-detail .map {
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 18px;
 }
+/* Desktop only: exactly 6 per row (so 12 themes = 6 + 6, centered).
+   Phones keep the responsive layout above — unchanged. */
+@media (min-width: 821px) {
+  .themes { grid-template-columns: repeat(6, 1fr); }
+}
 .theme-card {
   cursor: pointer;
 }
