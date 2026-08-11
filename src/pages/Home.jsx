@@ -22,15 +22,17 @@ import { designs } from '../data/designs.js'
 const firstImage = (category) =>
   designs.find((d) => d.category === category && d.image)?.image || ''
 
-// The six "Recent Work" cards. Edit the tags/labels here, or swap the
-// category to change which catalog picture shows.
+// The six "Recent Work" cards.
+//   img      = YOUR photo (drop it in public/recent/1.jpg … 6.jpg)
+//   fallback = shown until you add your photo (a catalog image)
+// So: add public/recent/1.jpg to replace the first card, etc.
 const recentWork = [
-  { tag: 'ANIME',    badge: 'orange', label: 'Anime Prints',    image: firstImage('anime') },
-  { tag: 'BIRTHDAY', badge: 'blue',   label: 'Birthday Bash',   image: firstImage('birthdays') },
-  { tag: 'MEMORIAL', badge: 'pink',   label: 'In Loving Memory', image: firstImage('memorial') },
-  { tag: 'NBA',      badge: 'orange', label: 'Hoops Season',    image: firstImage('nba') },
-  { tag: 'COUPLES',  badge: 'blue',   label: 'His & Hers',      image: firstImage('couples') },
-  { tag: 'FOOTBALL', badge: 'pink',   label: 'Game Day',        image: firstImage('football') }
+  { tag: 'ANIME',    badge: 'orange', label: 'Anime Prints',     img: 'recent/1.jpg', fallback: firstImage('anime') },
+  { tag: 'BIRTHDAY', badge: 'blue',   label: 'Birthday Bash',    img: 'recent/2.jpg', fallback: firstImage('birthdays') },
+  { tag: 'MEMORIAL', badge: 'pink',   label: 'In Loving Memory', img: 'recent/3.jpg', fallback: firstImage('memorial') },
+  { tag: 'NBA',      badge: 'orange', label: 'Hoops Season',     img: 'recent/4.jpg', fallback: firstImage('nba') },
+  { tag: 'COUPLES',  badge: 'blue',   label: 'His & Hers',       img: 'recent/5.jpg', fallback: firstImage('couples') },
+  { tag: 'FOOTBALL', badge: 'pink',   label: 'Game Day',         img: 'recent/6.jpg', fallback: firstImage('football') }
 ]
 
 export default function Home() {
@@ -239,17 +241,23 @@ export default function Home() {
             {recentWork.map((w, i) => (
               <Reveal key={i} className={'card c' + (i + 1)}>
                 <span className={'cbadge ' + w.badge}>{w.tag}</span>
-                {/* Real design picture pulled from our catalog. Falls
-                    back to the colored card if the image can't load. */}
-                {w.image && (
-                  <img
-                    className="card-img"
-                    src={w.image}
-                    alt={w.label}
-                    loading="lazy"
-                    onError={(e) => { e.currentTarget.style.display = 'none' }}
-                  />
-                )}
+                {/* Tries YOUR photo first (public/recent/N.jpg); if that
+                    isn't there, falls back to a catalog image; if that
+                    also fails, the colored card shows. */}
+                <img
+                  className="card-img"
+                  src={w.img}
+                  alt={w.label}
+                  loading="lazy"
+                  onError={(e) => {
+                    if (!e.currentTarget.dataset.fb && w.fallback) {
+                      e.currentTarget.dataset.fb = '1'
+                      e.currentTarget.src = w.fallback
+                    } else {
+                      e.currentTarget.style.display = 'none'
+                    }
+                  }}
+                />
                 <span className="clabel">{w.label}</span>
               </Reveal>
             ))}

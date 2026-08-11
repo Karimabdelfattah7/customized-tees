@@ -1,0 +1,2 @@
+Drop your 8 Customize sample photos here, named 1.jpg .. 8.jpg
+(matches prompts #15-22 in AI-IMAGE-PROMPTS.md). Then git push.

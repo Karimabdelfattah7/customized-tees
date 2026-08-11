@@ -289,15 +289,32 @@ export default function Customize() {
               <h2>What We've <span className="accent-pink">Printed</span></h2>
             </div>
           </Reveal>
+          {/* Add your photos in public/samples/1.jpg … 8.jpg to replace
+              these tiles (in this same order). Until then the colored
+              tiles show. */}
           <div className="gallery">
-            <Reveal className="card c1"><span className="cbadge orange">GRADUATION</span><span className="clabel">Graduation Design</span></Reveal>
-            <Reveal className="card c3"><span className="cbadge pink">MEMORIAL</span><span className="clabel">Memorial Tribute</span></Reveal>
-            <Reveal className="card c6"><span className="cbadge pink">SPORTS</span><span className="clabel">Team Jersey</span></Reveal>
-            <Reveal className="card c2"><span className="cbadge blue">BIRTHDAY</span><span className="clabel">Birthday Bash</span></Reveal>
-            <Reveal className="card c4"><span className="cbadge orange">BUSINESS</span><span className="clabel">Company Tee</span></Reveal>
-            <Reveal className="card c5"><span className="cbadge blue">EVENT</span><span className="clabel">Family Reunion</span></Reveal>
-            <Reveal className="card c7"><span className="cbadge blue">COUPLES</span><span className="clabel">His & Hers</span></Reveal>
-            <Reveal className="card c8"><span className="cbadge orange">FUNDRAISER</span><span className="clabel">Community Drive</span></Reveal>
+            {[
+              { c: 'c1', badge: 'orange', tag: 'GRADUATION', label: 'Graduation Design' },
+              { c: 'c3', badge: 'pink',   tag: 'MEMORIAL',   label: 'Memorial Tribute' },
+              { c: 'c6', badge: 'pink',   tag: 'SPORTS',     label: 'Team Jersey' },
+              { c: 'c2', badge: 'blue',   tag: 'BIRTHDAY',   label: 'Birthday Bash' },
+              { c: 'c4', badge: 'orange', tag: 'BUSINESS',   label: 'Company Tee' },
+              { c: 'c5', badge: 'blue',   tag: 'EVENT',      label: 'Family Reunion' },
+              { c: 'c7', badge: 'blue',   tag: 'COUPLES',    label: 'His & Hers' },
+              { c: 'c8', badge: 'orange', tag: 'FUNDRAISER', label: 'Community Drive' }
+            ].map((s, i) => (
+              <Reveal key={i} className={'card ' + s.c}>
+                <span className={'cbadge ' + s.badge}>{s.tag}</span>
+                <img
+                  className="card-img"
+                  src={`samples/${i + 1}.jpg`}
+                  alt={s.label}
+                  loading="lazy"
+                  onError={(e) => { e.currentTarget.style.display = 'none' }}
+                />
+                <span className="clabel">{s.label}</span>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>

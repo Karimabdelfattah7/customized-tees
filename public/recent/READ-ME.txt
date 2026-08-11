@@ -1,0 +1,2 @@
+Drop your 6 'Recent Work' photos here, named 1.jpg .. 6.jpg
+(matches prompts #9-14 in AI-IMAGE-PROMPTS.md). Then git push.

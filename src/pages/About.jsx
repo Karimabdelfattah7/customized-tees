@@ -45,7 +45,16 @@ export default function About() {
       <section className="block">
         <div className="container">
           <div className="story">
-            <Reveal className="story-img" />
+            {/* Add public/about.jpg to replace this colorful block with
+                your own photo. */}
+            <Reveal className="story-img">
+              <img
+                className="story-photo"
+                src="about.jpg"
+                alt="Customized Tees custom shirts"
+                onError={(e) => { e.currentTarget.style.display = 'none' }}
+              />
+            </Reveal>
             <Reveal>
               <h2>Our <span className="brand-script accent-orange">Story</span></h2>
               <p>Customized Tees started with a simple idea: that every Louisvillian should be able to walk into a shop, share a vision, and walk out with a one-of-a-kind shirt within minutes. No middlemen. No waiting weeks. No minimum orders.</p>
