@@ -16,6 +16,7 @@ import { Link } from 'react-router-dom'
 import Reveal from '../components/Reveal.jsx'
 import Reviews from '../components/Reviews.jsx'
 import { designs } from '../data/designs.js'
+import { tryExts } from '../lib/imageFallback.js'
 
 // Helper: grab the first design image from a given category so the
 // "Recent Work" cards show real pictures from our catalog.
@@ -183,7 +184,7 @@ export default function Home() {
                 src={card.img}
                 alt={card.title + ' custom shirt'}
                 loading="lazy"
-                onError={(e) => { e.currentTarget.style.display = 'none' }}
+                onError={tryExts('hof/' + (i + 1), (e) => { e.currentTarget.style.display = 'none' })}
               />
               <span className="hof-icon" aria-hidden="true">{card.icon}</span>
               <span className="hof-num">{String(i + 1).padStart(2, '0')}</span>
@@ -249,14 +250,16 @@ export default function Home() {
                   src={w.img}
                   alt={w.label}
                   loading="lazy"
-                  onError={(e) => {
-                    if (!e.currentTarget.dataset.fb && w.fallback) {
-                      e.currentTarget.dataset.fb = '1'
-                      e.currentTarget.src = w.fallback
+                  onError={tryExts('recent/' + (i + 1), (e) => {
+                    // all extensions failed → use catalog image, then hide
+                    const img = e.currentTarget
+                    if (!img.dataset.fb && w.fallback) {
+                      img.dataset.fb = '1'
+                      img.src = w.fallback
                     } else {
-                      e.currentTarget.style.display = 'none'
+                      img.style.display = 'none'
                     }
-                  }}
+                  })}
                 />
                 <span className="clabel">{w.label}</span>
               </Reveal>

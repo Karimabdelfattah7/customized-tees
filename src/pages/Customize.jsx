@@ -15,6 +15,7 @@
 import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import Reveal from '../components/Reveal.jsx'
+import { tryExts } from '../lib/imageFallback.js'
 
 // ===============================================================
 //  HOW TO RECEIVE FORM SUBMISSIONS BY EMAIL  (one-time setup)
@@ -310,7 +311,7 @@ export default function Customize() {
                   src={`samples/${i + 1}.jpg`}
                   alt={s.label}
                   loading="lazy"
-                  onError={(e) => { e.currentTarget.style.display = 'none' }}
+                  onError={tryExts(`samples/${i + 1}`, (e) => { e.currentTarget.style.display = 'none' })}
                 />
                 <span className="clabel">{s.label}</span>
               </Reveal>

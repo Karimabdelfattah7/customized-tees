@@ -6,6 +6,7 @@
 // ---------------------------------------------------------------
 
 import Reveal from '../components/Reveal.jsx'
+import { tryExts } from '../lib/imageFallback.js'
 
 // Store hours (same for both locations):
 //   Mon–Sat 11am–8pm, Sun 12pm–6pm  (Louisville = US Eastern time)
@@ -52,7 +53,7 @@ export default function About() {
                 className="story-photo"
                 src="about.jpg"
                 alt="Customized Tees custom shirts"
-                onError={(e) => { e.currentTarget.style.display = 'none' }}
+                onError={tryExts('about', (e) => { e.currentTarget.style.display = 'none' })}
               />
             </Reveal>
             <Reveal>
@@ -92,10 +93,10 @@ export default function About() {
                   className="store-photo"
                   src="stmatthews-store.jpg"
                   alt="Customized Tees storefront — St Matthews location"
-                  onError={(e) => {
+                  onError={tryExts('stmatthews-store', (e) => {
                     e.currentTarget.style.display = 'none'
                     e.currentTarget.parentElement.classList.add('no-photo')
-                  }}
+                  })}
                 />
                 <div className="store-photo-fallback">
                   <div>📸</div>
@@ -141,10 +142,10 @@ export default function About() {
                   className="store-photo"
                   src="jefferson-store.jpg"
                   alt="Customized Tees storefront — Jefferson Mall location"
-                  onError={(e) => {
+                  onError={tryExts('jefferson-store', (e) => {
                     e.currentTarget.style.display = 'none'
                     e.currentTarget.parentElement.classList.add('no-photo')
-                  }}
+                  })}
                 />
                 <div className="store-photo-fallback">
                   <div>📸</div>
