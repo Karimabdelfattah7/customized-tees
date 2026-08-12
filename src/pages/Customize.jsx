@@ -309,7 +309,7 @@ export default function Customize() {
                 <span className={'cbadge ' + s.badge}>{s.tag}</span>
                 <img
                   className="card-img"
-                  src={imgUrl(`sample-${i + 1}`, `samples/${i + 1}`)}
+                  src={imgUrl(`samples/${i + 1}`, `samples/${i + 1}`)}
                   alt={s.label}
                   loading="lazy"
                   onError={tryExts(`samples/${i + 1}`, (e) => { e.currentTarget.style.display = 'none' })}

@@ -67,7 +67,7 @@ function tryImage(slug, n) {
   return new Promise((resolve) => {
     // Build the ordered list of URLs to try.
     const candidates = []
-    if (usingCloud) candidates.push(cloudUrl(`shop-${slug}-${n}`))
+    if (usingCloud) candidates.push(cloudUrl(`shop/${slug}/${n}`))
     for (const ext of EXTS) candidates.push(`shop/${slug}/${n}.${ext}`)
 
     let i = 0
