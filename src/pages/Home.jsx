@@ -17,6 +17,7 @@ import Reveal from '../components/Reveal.jsx'
 import Reviews from '../components/Reviews.jsx'
 import { designs } from '../data/designs.js'
 import { tryExts } from '../lib/imageFallback.js'
+import { imgUrl } from '../lib/images.js'
 
 // Helper: grab the first design image from a given category so the
 // "Recent Work" cards show real pictures from our catalog.
@@ -181,7 +182,7 @@ export default function Home() {
                   missing, revealing the gradient + icon underneath. */}
               <img
                 className="hof-img"
-                src={card.img}
+                src={imgUrl('hof/' + (i + 1), 'hof/' + (i + 1))}
                 alt={card.title + ' custom shirt'}
                 loading="lazy"
                 onError={tryExts('hof/' + (i + 1), (e) => { e.currentTarget.style.display = 'none' })}
@@ -247,7 +248,7 @@ export default function Home() {
                     also fails, the colored card shows. */}
                 <img
                   className="card-img"
-                  src={w.img}
+                  src={imgUrl('recent/' + (i + 1), 'recent/' + (i + 1))}
                   alt={w.label}
                   loading="lazy"
                   onError={tryExts('recent/' + (i + 1), (e) => {

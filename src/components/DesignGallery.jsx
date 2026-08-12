@@ -17,6 +17,7 @@
 import { useMemo, useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { designs } from '../data/designs.js'
+import { usingCloud, cloudUrl } from '../lib/images.js'
 import Reveal from './Reveal.jsx'
 
 // The categories, in the order they appear on the page.
@@ -55,20 +56,27 @@ const CATEGORY_LOOK = {
   birthdays: { grad: ['#FF6B00', '#00AAFF'], icon: '🎂' }
 }
 
-// File extensions we try for each numbered image.
-const EXTS = ['jpg', 'jpeg', 'png', 'webp', 'JPG', 'PNG', 'JPEG', 'WEBP']
+// File extensions we try for each numbered LOCAL image.
+const EXTS = ['jpg', 'jpeg', 'png', 'webp']
 
-// Checks whether one image (e.g. shop/couples/3.jpg) exists by trying
-// to load it. Resolves to the working URL, or false if none found.
+// Checks whether image number `n` exists for a category. It tries
+// Cloudinary first (customized-tees/shop/<slug>/<n>), then the local
+// public/shop/<slug>/<n>.<ext> files. Resolves to the working URL, or
+// false if none exist.
 function tryImage(slug, n) {
   return new Promise((resolve) => {
+    // Build the ordered list of URLs to try.
+    const candidates = []
+    if (usingCloud) candidates.push(cloudUrl(`shop/${slug}/${n}`))
+    for (const ext of EXTS) candidates.push(`shop/${slug}/${n}.${ext}`)
+
     let i = 0
     const next = () => {
-      if (i >= EXTS.length) return resolve(false)
-      const url = `shop/${slug}/${n}.${EXTS[i]}`
+      if (i >= candidates.length) return resolve(false)
+      const url = candidates[i++]
       const img = new Image()
       img.onload = () => resolve(url)
-      img.onerror = () => { i++; next() }
+      img.onerror = next
       img.src = url
     }
     next()
@@ -111,16 +119,18 @@ export default function DesignGallery() {
     return () => window.removeEventListener('ct-search', onThemeSearch)
   }, [])
 
-  // On first load, scan every category folder for numbered images.
+  // On first load, scan every category for numbered images. We do all
+  // categories IN PARALLEL and update each one as soon as it's done,
+  // so images appear quickly instead of waiting for every category.
   useEffect(() => {
     let cancelled = false
-    ;(async () => {
-      const map = {}
-      for (const cat of CATEGORIES) {
-        map[cat.slug] = await probeCategory(cat.slug)
-      }
-      if (!cancelled) setOwnImages(map)
-    })()
+    CATEGORIES.forEach((cat) => {
+      probeCategory(cat.slug).then((imgs) => {
+        if (!cancelled && imgs.length) {
+          setOwnImages((prev) => ({ ...prev, [cat.slug]: imgs }))
+        }
+      })
+    })
     return () => { cancelled = true }
   }, [])
 

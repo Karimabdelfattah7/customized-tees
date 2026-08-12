@@ -8,8 +8,9 @@
 //   <img src="hof/1.jpg" onError={tryExts('hof/1', () => hide())} />
 // ---------------------------------------------------------------
 
-// Extensions tried AFTER the initial ".jpg", in order.
-const REST = ['jpeg', 'png', 'webp', 'JPG', 'JPEG', 'PNG', 'WEBP']
+// Local extensions tried as fallbacks (the initial src may be a
+// Cloudinary URL, so we start from .jpg here to cover the local file).
+const REST = ['jpg', 'jpeg', 'png', 'webp', 'JPG', 'JPEG', 'PNG', 'WEBP']
 
 // Returns an onError handler for an <img>. `base` is the file path
 // WITHOUT extension (e.g. "hof/1"). `onGiveUp` runs once every

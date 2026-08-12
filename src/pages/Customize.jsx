@@ -16,6 +16,7 @@ import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import Reveal from '../components/Reveal.jsx'
 import { tryExts } from '../lib/imageFallback.js'
+import { imgUrl } from '../lib/images.js'
 
 // ===============================================================
 //  HOW TO RECEIVE FORM SUBMISSIONS BY EMAIL  (one-time setup)
@@ -308,7 +309,7 @@ export default function Customize() {
                 <span className={'cbadge ' + s.badge}>{s.tag}</span>
                 <img
                   className="card-img"
-                  src={`samples/${i + 1}.jpg`}
+                  src={imgUrl(`samples/${i + 1}`, `samples/${i + 1}`)}
                   alt={s.label}
                   loading="lazy"
                   onError={tryExts(`samples/${i + 1}`, (e) => { e.currentTarget.style.display = 'none' })}
