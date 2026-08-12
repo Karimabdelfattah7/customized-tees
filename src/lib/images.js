@@ -16,16 +16,14 @@
 
 export const CLOUDINARY_CLOUD = 'xvnxxkyt'
 
-// The root folder inside Cloudinary that holds all the pictures.
-const FOLDER = 'customized-tees'
-
 export const usingCloud = !!CLOUDINARY_CLOUD
 
-// Build the Cloudinary URL for a given id, e.g. cloudUrl('hof/1').
-// f_auto,q_auto = Cloudinary auto-picks the best format & quality
-// (makes the site faster too).
+// Build the Cloudinary URL for a given id. The "id" is simply the name
+// you give the file when you upload it (e.g. "hof-1"). No folders are
+// used — Cloudinary names each asset after the uploaded file's name.
+// f_auto,q_auto = Cloudinary auto-picks the best format & quality.
 export function cloudUrl(id) {
-  return `https://res.cloudinary.com/${CLOUDINARY_CLOUD}/image/upload/f_auto,q_auto/${FOLDER}/${id}`
+  return `https://res.cloudinary.com/${CLOUDINARY_CLOUD}/image/upload/f_auto,q_auto/${id}`
 }
 
 // The primary src for an image slot:

@@ -182,7 +182,7 @@ export default function Home() {
                   missing, revealing the gradient + icon underneath. */}
               <img
                 className="hof-img"
-                src={imgUrl('hof/' + (i + 1), 'hof/' + (i + 1))}
+                src={imgUrl('hof-' + (i + 1), 'hof/' + (i + 1))}
                 alt={card.title + ' custom shirt'}
                 loading="lazy"
                 onError={tryExts('hof/' + (i + 1), (e) => { e.currentTarget.style.display = 'none' })}
@@ -248,7 +248,7 @@ export default function Home() {
                     also fails, the colored card shows. */}
                 <img
                   className="card-img"
-                  src={imgUrl('recent/' + (i + 1), 'recent/' + (i + 1))}
+                  src={imgUrl('recent-' + (i + 1), 'recent/' + (i + 1))}
                   alt={w.label}
                   loading="lazy"
                   onError={tryExts('recent/' + (i + 1), (e) => {

@@ -2,70 +2,71 @@
 
 You can update the pictures on customizedtees.netlify.app yourself — with
 NO access to the website code. You only use Cloudinary. Changes appear on
-the live site within seconds.
+the live site within seconds. No folders, no settings — just naming files.
 
-## Log in
-1. Go to https://cloudinary.com and log in.
-2. Open the **Media Library** (left menu).
+## The whole trick: NAME THE FILE, THEN UPLOAD IT
+Cloudinary names each picture after the file you upload. So:
 
-## The ONE rule that makes it work: the "Public ID"
-Every picture slot on the website has a fixed name called a **Public ID**.
-When you upload a picture, set its **Public ID** to the exact value from the
-list below. (In the upload box there is a "Public ID" field — type it there.
-The slashes "/" just keep things in tidy folders.)
+1. On your computer, RENAME your image file to the exact slot name
+   (see the list below), e.g. rename it to  hof-1.jpg
+2. Go to cloudinary.com -> Media Library -> Upload -> pick that file.
+3. Done. It shows on the website within seconds.
 
-- Upload the image, and in the Public ID field type the exact ID.
-- Any format works — JPG, PNG, WEBP. No file extension in the Public ID.
-- Square pictures (1:1) look best. The About + storefront ones look best wide.
+Any format works (JPG, PNG, WEBP). Square pictures look best (the About and
+storefront ones look best wide).
 
-## To REPLACE a picture
-Upload a new image with the SAME Public ID and turn ON "Overwrite"
-(and "Invalidate" if shown). It updates on the site within a minute.
+## To REPLACE a picture later
+Delete the old one in Cloudinary (or turn on "Overwrite" when uploading a
+new file with the same name). Updates within a minute.
 
 ===================================================================
-THE FULL LIST OF PUBLIC IDs
+THE NAME FOR EACH SLOT  (rename your file to this, then upload)
 ===================================================================
 
 HOME — "Hall of Designs" (8):
-  customized-tees/hof/1   (Graduation)
-  customized-tees/hof/2   (Memorial)
-  customized-tees/hof/3   (Birthday)
-  customized-tees/hof/4   (Sports)
-  customized-tees/hof/5   (Event)
-  customized-tees/hof/6   (Couples)
-  customized-tees/hof/7   (Business)
-  customized-tees/hof/8   (Community)
+  hof-1   (Graduation)
+  hof-2   (Memorial)
+  hof-3   (Birthday)
+  hof-4   (Sports)
+  hof-5   (Event)
+  hof-6   (Couples)
+  hof-7   (Business)
+  hof-8   (Community)
 
 HOME — "Recent Work" (6):
-  customized-tees/recent/1 … customized-tees/recent/6
+  recent-1 , recent-2 , recent-3 , recent-4 , recent-5 , recent-6
 
 CUSTOMIZE — sample gallery (8):
-  customized-tees/samples/1 … customized-tees/samples/8
+  sample-1 , sample-2 , sample-3 , sample-4 ,
+  sample-5 , sample-6 , sample-7 , sample-8
 
 SHOP — categories (as many as you want each, numbered 1,2,3… no gaps):
-  customized-tees/shop/rappers/1, /2, /3 …
-  customized-tees/shop/anime/1 …
-  customized-tees/shop/nba/1 …
-  customized-tees/shop/football/1 …
-  customized-tees/shop/cartoon/1 …
-  customized-tees/shop/couples/1 …
-  customized-tees/shop/kids/1 …
-  customized-tees/shop/gaming/1 …
-  customized-tees/shop/movies/1 …
-  customized-tees/shop/memes/1 …
-  customized-tees/shop/memorial/1 …
-  customized-tees/shop/birthdays/1 …
+  shop-rappers-1 , shop-rappers-2 , shop-rappers-3 …
+  shop-anime-1 …
+  shop-nba-1 …
+  shop-football-1 …
+  shop-cartoon-1 …
+  shop-couples-1 …
+  shop-kids-1 …
+  shop-gaming-1 …
+  shop-movies-1 …
+  shop-memes-1 …
+  shop-memorial-1 …
+  shop-birthdays-1 …
 
 ABOUT / FIND US:
-  customized-tees/about              (the "Our Story" photo — wide)
-  customized-tees/stmatthews-store   (St Matthews storefront — wide)
-  customized-tees/jefferson-store    (Jefferson Mall storefront — wide)
+  about              (the "Our Story" photo — looks best wide)
+  stmatthews-store   (St Matthews storefront — wide)
+  jefferson-store    (Jefferson Mall storefront — wide)
 
 ===================================================================
-TIPS
+EXAMPLES
 ===================================================================
-- For shop categories, always start at 1 and don't skip numbers
-  (1, 2, 3 …). The site stops at the first missing number.
-- If a slot has no Cloudinary picture yet, the site quietly shows a
-  placeholder — nothing looks broken.
+- First Hall-of-Designs card  -> name your file  hof-1.jpg  and upload.
+- Second couples design       -> name your file  shop-couples-2.png  and upload.
+- The Our Story photo         -> name your file  about.jpg  and upload.
+
+TIPS
+- For shop categories, start at 1 and don't skip numbers (1,2,3…).
+- Empty slots quietly show a placeholder — nothing looks broken.
 - You never touch GitHub or code. Cloudinary only.
