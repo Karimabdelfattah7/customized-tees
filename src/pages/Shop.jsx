@@ -145,8 +145,8 @@ export default function Shop() {
       </section>
 
       {/* ============ SEARCHABLE DESIGN GALLERY ============
-          Real designs grouped by category, with a live search box.
-          Data comes from src/data/designs.js (scraped sample set). */}
+          Your uploaded designs grouped by category, with a live search
+          box. Images come from Cloudinary (see CLOUDINARY-GUIDE.md). */}
       <DesignGallery />
 
       {/* ============ PLAIN APPAREL ============ */}

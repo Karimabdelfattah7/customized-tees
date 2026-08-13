@@ -15,26 +15,19 @@
 import { Link } from 'react-router-dom'
 import Reveal from '../components/Reveal.jsx'
 import Reviews from '../components/Reviews.jsx'
-import { designs } from '../data/designs.js'
 import { tryExts } from '../lib/imageFallback.js'
 import { imgUrl } from '../lib/images.js'
 
-// Helper: grab the first design image from a given category so the
-// "Recent Work" cards show real pictures from our catalog.
-const firstImage = (category) =>
-  designs.find((d) => d.category === category && d.image)?.image || ''
-
 // The six "Recent Work" cards.
-//   img      = YOUR photo (drop it in public/recent/1.jpg … 6.jpg)
-//   fallback = shown until you add your photo (a catalog image)
-// So: add public/recent/1.jpg to replace the first card, etc.
+//   Add your photo via Cloudinary (recent/1 … recent/6). Until then a
+//   colored placeholder card shows.
 const recentWork = [
-  { tag: 'ANIME',    badge: 'orange', label: 'Anime Prints',     img: 'recent/1.jpg', fallback: firstImage('anime') },
-  { tag: 'BIRTHDAY', badge: 'blue',   label: 'Birthday Bash',    img: 'recent/2.jpg', fallback: firstImage('birthdays') },
-  { tag: 'MEMORIAL', badge: 'pink',   label: 'In Loving Memory', img: 'recent/3.jpg', fallback: firstImage('memorial') },
-  { tag: 'NBA',      badge: 'orange', label: 'Hoops Season',     img: 'recent/4.jpg', fallback: firstImage('nba') },
-  { tag: 'COUPLES',  badge: 'blue',   label: 'His & Hers',       img: 'recent/5.jpg', fallback: firstImage('couples') },
-  { tag: 'FOOTBALL', badge: 'pink',   label: 'Game Day',         img: 'recent/6.jpg', fallback: firstImage('football') }
+  { tag: 'ANIME',    badge: 'orange', label: 'Anime Prints',     img: 'recent/1.jpg' },
+  { tag: 'BIRTHDAY', badge: 'blue',   label: 'Birthday Bash',    img: 'recent/2.jpg' },
+  { tag: 'MEMORIAL', badge: 'pink',   label: 'In Loving Memory', img: 'recent/3.jpg' },
+  { tag: 'NBA',      badge: 'orange', label: 'Hoops Season',     img: 'recent/4.jpg' },
+  { tag: 'COUPLES',  badge: 'blue',   label: 'His & Hers',       img: 'recent/5.jpg' },
+  { tag: 'FOOTBALL', badge: 'pink',   label: 'Game Day',         img: 'recent/6.jpg' }
 ]
 
 export default function Home() {
@@ -243,24 +236,14 @@ export default function Home() {
             {recentWork.map((w, i) => (
               <Reveal key={i} className={'card c' + (i + 1)}>
                 <span className={'cbadge ' + w.badge}>{w.tag}</span>
-                {/* Tries YOUR photo first (public/recent/N.jpg); if that
-                    isn't there, falls back to a catalog image; if that
-                    also fails, the colored card shows. */}
+                {/* Shows YOUR photo (recent/N); if it isn't there yet,
+                    the colored card underneath shows. */}
                 <img
                   className="card-img"
                   src={imgUrl('recent/' + (i + 1), 'recent/' + (i + 1))}
                   alt={w.label}
                   loading="lazy"
-                  onError={tryExts('recent/' + (i + 1), (e) => {
-                    // all extensions failed → use catalog image, then hide
-                    const img = e.currentTarget
-                    if (!img.dataset.fb && w.fallback) {
-                      img.dataset.fb = '1'
-                      img.src = w.fallback
-                    } else {
-                      img.style.display = 'none'
-                    }
-                  })}
+                  onError={tryExts('recent/' + (i + 1), (e) => { e.currentTarget.style.display = 'none' })}
                 />
                 <span className="clabel">{w.label}</span>
               </Reveal>

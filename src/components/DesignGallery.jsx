@@ -14,9 +14,8 @@
 //   the older sample designs as a fallback so the shop isn't empty.
 // ---------------------------------------------------------------
 
-import { useMemo, useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { designs } from '../data/designs.js'
 import { usingCloud, cloudUrl } from '../lib/images.js'
 import Reveal from './Reveal.jsx'
 
@@ -134,29 +133,19 @@ export default function DesignGallery() {
     return () => { cancelled = true }
   }, [])
 
-  // The old scraped designs, grouped by category (used as fallback).
-  const grouped = useMemo(() => {
-    const g = {}
-    for (const d of designs) (g[d.category] ||= []).push(d)
-    return g
-  }, [])
-
-  // Build the final list of items for one category: your own folder
-  // images if you've added any, otherwise the sample fallback set.
+  // Build the list of items for one category — ONLY your own uploaded
+  // pictures (Cloudinary / local). Categories with no pictures yet are
+  // simply not shown.
   const itemsForCategory = (cat) => {
     const own = ownImages[cat.slug] || []
-    if (own.length > 0) {
-      return own.map((url, i) => ({
-        id: `${cat.slug}-own-${i}`,
-        title: `${cat.label} #${i + 1}`,
-        image: url,
-        category: cat.slug,
-        tags: [cat.slug, cat.label.toLowerCase()],
-        description: `Custom ${cat.label} design — pick it in-store and we'll print it on your garment.`
-      }))
-    }
-    // fallback to the scraped sample designs for this category
-    return (grouped[cat.fallback] || []).map((d) => ({ ...d, category: cat.slug }))
+    return own.map((url, i) => ({
+      id: `${cat.slug}-own-${i}`,
+      title: `${cat.label} #${i + 1}`,
+      image: url,
+      category: cat.slug,
+      tags: [cat.slug, cat.label.toLowerCase()],
+      description: `Custom ${cat.label} design — pick it in-store and we'll print it on your garment.`
+    }))
   }
 
   // Does an item match the current search text?
