@@ -1,73 +1,69 @@
-# How to Add / Change Website Pictures (Cloudinary) — FOLDER VERSION
+# How to Add / Change Website Pictures (Cloudinary)
 
 You can update the pictures on customizedtees.netlify.app yourself — with
 NO access to the website code. You only use Cloudinary. Changes appear on
 the live site within a minute.
 
 ===================================================================
-THE 3 STEPS
+THE WHOLE TRICK: NAME THE FILE, THEN UPLOAD IT
 ===================================================================
-1. Log in at cloudinary.com  ->  open "Media Library".
-2. Open the folder for the picture you want to add (see the map below).
-   Everything is inside one folder called  "customized-tees".
-3. NAME your image file as a NUMBER (1, 2, 3 …) and UPLOAD it into that
-   folder.  ->  It shows on the website within a minute.
+On your computer, RENAME your picture to the exact name for that spot
+(see the list). Then in Cloudinary -> Media Library -> Upload it.
+That's the whole process. Folders don't matter — the NAME is what counts.
 
-That's it. The FOLDER decides where on the site it goes; the NUMBER
-decides the order.
-
-Any format works (JPG, PNG, WEBP). Square pictures look best.
+- Any format works: JPG, PNG, WEBP.
+- Square pictures look best (About + storefronts look best wide).
+- To REPLACE a picture: upload a new file with the SAME name and turn on
+  "Overwrite". Updates within a minute.
 
 ===================================================================
-THE FOLDER MAP  (inside "customized-tees")
+THE NAME FOR EACH SPOT  (rename your file to this, then upload)
 ===================================================================
 
-customized-tees/
-├── hof/            <- Home "Hall of Designs".  Upload 1..8
-│                       (1=Graduation 2=Memorial 3=Birthday 4=Sports
-│                        5=Event 6=Couples 7=Business 8=Community)
-├── recent/         <- Home "Recent Work".  Upload 1..6
-├── samples/        <- Customize page sample gallery.  Upload 1..8
-├── shop/
-│   ├── rappers/    <- Upload 1, 2, 3 … (as many as you want)
-│   ├── anime/
-│   ├── nba/
-│   ├── football/
-│   ├── cartoon/
-│   ├── couples/
-│   ├── kids/
-│   ├── gaming/
-│   ├── movies/
-│   ├── memes/
-│   ├── memorial/
-│   └── birthdays/
-├── about            <- "Our Story" photo. Name the file  about  (wide photo)
-├── stmatthews-store <- St Matthews storefront photo (wide)
-└── jefferson-store  <- Jefferson Mall storefront photo (wide)
+HOME — "Hall of Designs" (8):
+  hof-1   (Graduation)     hof-5   (Event)
+  hof-2   (Memorial)       hof-6   (Couples)
+  hof-3   (Birthday)       hof-7   (Business)
+  hof-4   (Sports)         hof-8   (Community)
 
-(For about / stmatthews-store / jefferson-store: upload them straight
-into the "customized-tees" folder, named exactly like that.)
+HOME — "Recent Work" (6):
+  recent-1 , recent-2 , recent-3 , recent-4 , recent-5 , recent-6
+
+CUSTOMIZE — sample gallery (8):
+  sample-1 , sample-2 , sample-3 , sample-4 ,
+  sample-5 , sample-6 , sample-7 , sample-8
+
+SHOP — categories (as many as you want each, numbered 1,2,3… no gaps):
+  shop-rappers-1 , shop-rappers-2 , shop-rappers-3 …
+  shop-anime-1 …
+  shop-nba-1 …
+  shop-football-1 …
+  shop-cartoon-1 …
+  shop-couples-1 …
+  shop-kids-1 …
+  shop-gaming-1 …
+  shop-movies-1 …
+  shop-memes-1 …
+  shop-memorial-1 …
+  shop-birthdays-1 …
+
+ABOUT / FIND US:
+  about              (the "Our Story" photo — looks best wide)
+  stmatthews-store   (St Matthews storefront — wide)
+  jefferson-store    (Jefferson Mall storefront — wide)
 
 ===================================================================
 EXAMPLES
 ===================================================================
-- Add the 1st Hall-of-Designs picture:
-    open  customized-tees/hof  ->  upload a file named  1.jpg
-- Add a 3rd couples design:
-    open  customized-tees/shop/couples  ->  upload a file named  3.jpg
-- Change the Our Story photo:
-    open  customized-tees  ->  upload a file named  about.jpg  (overwrite)
+- 1st Hall-of-Designs picture -> name the file  hof-1.jpg   -> upload
+- 3rd couples design          -> name the file  shop-couples-3.jpg -> upload
+- The Our Story photo         -> name the file  about.jpg   -> upload
 
-===================================================================
-TO REPLACE A PICTURE
-===================================================================
-Upload a new file with the SAME name into the SAME folder and choose
-"Overwrite". It updates within a minute.
+TIP: You can still make folders in Cloudinary to keep yourself organized —
+they don't affect the website. Only the file NAME matters.
 
-===================================================================
-RULES / TIPS
-===================================================================
-- Always name shop pictures 1, 2, 3 … with NO gaps. The site stops at
-  the first missing number.
-- Empty slots quietly show a placeholder — nothing looks broken.
-- You NEVER touch GitHub or code. Cloudinary only.
+RULES
+- Shop pictures must be numbered 1, 2, 3 … with NO gaps (the site stops
+  at the first missing number).
+- Empty spots quietly show a placeholder — nothing looks broken.
+- You never touch GitHub or code. Cloudinary only.
