@@ -18,15 +18,13 @@ export const CLOUDINARY_CLOUD = 'xvnxxkyt'
 
 export const usingCloud = !!CLOUDINARY_CLOUD
 
-// Everything lives under this one Cloudinary folder, so the helper sees
-// a tidy "customized-tees" folder with hof / recent / samples / shop
-// inside it (mirrors the local layout).
-const ROOT = 'customized-tees'
-
-// Build the Cloudinary URL for a slot id like 'hof/1' or 'shop/couples/2'.
+// Build the Cloudinary URL for a slot id. The "id" is exactly the file
+// NAME your helper uploads (e.g. "hof-1" or "shop-couples-2"). Because
+// this account uses dynamic folders, the picture's name IS the filename
+// — so the helper just names the file and uploads it.
 // f_auto,q_auto = Cloudinary auto-picks the best format & quality.
 export function cloudUrl(id) {
-  return `https://res.cloudinary.com/${CLOUDINARY_CLOUD}/image/upload/f_auto,q_auto/${ROOT}/${id}`
+  return `https://res.cloudinary.com/${CLOUDINARY_CLOUD}/image/upload/f_auto,q_auto/${id}`
 }
 
 // The primary src for an image slot:
