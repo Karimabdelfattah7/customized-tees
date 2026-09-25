@@ -1,6 +1,8 @@
 # Customized Tees — Website
 
-A small React (Vite) website for the Customized Tees store in Louisville, KY.
+A React (Vite) website for the Customized Tees store in Louisville, KY.
+
+**Live site:** https://customizedtees.netlify.app
 
 ## How to run it on your computer
 
@@ -54,22 +56,13 @@ The finished files go into the `dist/` folder.
 
 ## The design catalog (Shop page)
 
-The Shop page shows a searchable gallery of designs grouped by category
-(Rap, Anime, NBA, Football, Couples, Kids, Memes, Memorial, Birthdays…).
+The Shop page shows a searchable gallery of the store's own designs, grouped by category.
 
-- The design data lives in **`src/data/designs.js`** (auto-generated).
-- To refresh it, run: **`node scripts/scrapeDesigns.js`** — this pulls
-  sample designs from Transfer Kingdom's public Shopify endpoints and
-  rewrites `src/data/designs.js`. Then run `npm run build` again.
-- **IMPORTANT / legal:** the anime, NBA, and football samples are
-  third-party licensed artwork pulled in only as demo content. Replace
-  them with the store's OWN designs before going public to avoid
-  copyright/trademark problems. Edit `src/data/designs.js` directly, or
-  change the category→collection mapping at the top of
-  `scripts/scrapeDesigns.js`.
-- The **search box** filters by title, tags, description, and category.
-- **"Order This Design"** sends the customer to the Customize form with
-  the design name pre-filled in the idea box.
+- Design images are hosted on **Cloudinary** and referenced by name, so new designs can be added without changing code. See [`docs/CLOUDINARY-GUIDE.md`](docs/CLOUDINARY-GUIDE.md).
+- The **search box** filters designs by title and category.
+- **"Order This Design"** sends the customer to the Customize form with the design name pre-filled.
+
+---
 
 ## The Edo SZ brand font
 
@@ -84,10 +77,8 @@ To use the real font:
 
 If the file isn't there, the brand name falls back to **Permanent Marker** (a similar brush style from Google Fonts) so the site still looks good.
 
-## Making the form actually email you
+## How the custom-order form works
 
-Right now the form just shows a thank-you message — it does **not** send a real email yet. The easiest way to make it work:
+Every "Send My Idea" submission is emailed to **customizedtees502@gmail.com** through [Web3Forms](https://web3forms.com). The access key is set at the top of `src/pages/Customize.jsx`.
 
-- Sign up at [Formspree](https://formspree.io) (free).
-- They give you an endpoint URL like `https://formspree.io/f/xxxx`.
-- In `src/pages/Customize.jsx`, change the `<form>` opening tag to `<form action="https://formspree.io/f/xxxx" method="POST">` and remove the `onSubmit` line, OR have a developer wire it up via fetch().
+If the customer attaches a reference image, the browser first uploads it to a file host (Litterbox by default, or Cloudinary if configured in the same file) and includes the download link in the email.

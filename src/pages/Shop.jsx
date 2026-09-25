@@ -146,7 +146,7 @@ export default function Shop() {
 
       {/* ============ SEARCHABLE DESIGN GALLERY ============
           Your uploaded designs grouped by category, with a live search
-          box. Images come from Cloudinary (see CLOUDINARY-GUIDE.md). */}
+          box. Images come from Cloudinary (see docs/CLOUDINARY-GUIDE.md). */}
       <DesignGallery />
 
       {/* ============ PLAIN APPAREL ============ */}

@@ -7,3 +7,6 @@ dist
 # Logs and misc
 *.log
 .DS_Store
+
+# Local tooling
+.claude/
