@@ -96,6 +96,7 @@ export default function App() {
         <Route path="/locations" element={<Navigate to="/about" replace />} />
         <Route path="/customize" element={<Customize />} />
         <Route path="/contact"   element={<Contact />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       </main>
 

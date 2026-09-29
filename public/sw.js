@@ -1,36 +1,23 @@
-// sw.js — minimal service worker so the site is installable ("Add to
-// Home Screen") and works offline as a basic fallback.
-//
-// Strategy: NETWORK-FIRST. We always try the live network so visitors
-// get the newest version; we only fall back to the cached copy if they
-// are offline. This avoids ever showing a stale site.
-
-const CACHE = 'ct-cache-v1'
-
-self.addEventListener('install', (e) => {
-  self.skipWaiting()
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(['./', './index.html'])))
+const CACHE = 'ct-pages-v2'
+self.addEventListener('install', () => self.skipWaiting())
+self.addEventListener('activate', event => {
+  event.waitUntil((async () => {
+    const keys = await caches.keys()
+    await Promise.all(keys.filter(key => key.startsWith('ct-') && key !== CACHE).map(key => caches.delete(key)))
+    await self.clients.claim()
+  })())
 })
-
-self.addEventListener('activate', (e) => {
-  // Clean up old caches from previous versions.
-  e.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
-    )
-  )
-  self.clients.claim()
-})
-
-self.addEventListener('fetch', (e) => {
-  if (e.request.method !== 'GET') return
-  e.respondWith(
-    fetch(e.request)
-      .then((res) => {
-        const copy = res.clone()
-        caches.open(CACHE).then((c) => c.put(e.request, copy)).catch(() => {})
-        return res
-      })
-      .catch(() => caches.match(e.request).then((r) => r || caches.match('./index.html')))
-  )
+self.addEventListener('fetch', event => {
+  if (event.request.method !== 'GET' || event.request.mode !== 'navigate' ||
+      new URL(event.request.url).origin !== self.location.origin) return
+  event.respondWith((async () => {
+    const cache = await caches.open(CACHE)
+    try {
+      const response = await fetch(event.request)
+      if (response.ok) await cache.put('/index.html', response.clone())
+      return response
+    } catch {
+      return await cache.match('/index.html') || new Response('You are offline. Please reconnect to visit Customized Tees.', { status: 503, headers: { 'Content-Type': 'text/plain' } })
+    }
+  })())
 })

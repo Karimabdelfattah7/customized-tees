@@ -1,84 +1,49 @@
-# Customized Tees — Website
+# Customized Tees
 
-A React (Vite) website for the Customized Tees store in Louisville, KY.
+React and Vite website for the Louisville custom apparel store.
 
-**Live site:** https://customizedtees.netlify.app
+Live site: https://customizedtees.netlify.app
 
-## How to run it on your computer
+## Local development
 
-You need **Node.js 18 or newer** installed (download from https://nodejs.org).
-
-Open a terminal in this folder and run:
-
-```
-npm install
+```sh
+npm ci
 npm run dev
 ```
 
-Then open the URL it prints (usually http://localhost:5173).
+## Build and preview
 
-To build a production version (for uploading to a host):
-
-```
+```sh
 npm run build
+npm run preview
 ```
 
-The finished files go into the `dist/` folder.
+`dist/` is the deployable site. Netlify settings are defined in `netlify.toml`: build command `npm run build`, publish directory `dist`. This is a hosted web build; opening index.html directly from a file manager is no longer supported.
 
----
+Clean routes such as `/shop` work through Netlify's SPA rewrite. Previously shared `/#/shop` links are converted to clean routes in the browser.
 
-## What's in each file (plain English)
+## Content and images
 
-| File | What it does |
-|------|-------------|
-| `index.html` | The empty page React fills in. Loads the Google fonts. |
-| `package.json` | Lists the libraries the site needs. |
-| `src/main.jsx` | Starts React. |
-| `src/App.jsx` | The shell — top nav, page routing, footer. |
-| `src/ThemeContext.jsx` | Controls **light / dark mode**. Remembers your choice. |
-| `src/styles.css` | All the colors, fonts, and animations. Heavily commented. |
-| `src/components/Navbar.jsx` | Top bar with brand name, page links, theme toggle, hamburger. |
-| `src/components/Footer.jsx` | Bottom strip with links and contact info. |
-| `src/components/Reveal.jsx` | Makes things fade in when you scroll to them. |
-| `src/pages/Home.jsx` | The main page. |
-| `src/pages/About.jsx` | About + both store locations. |
-| `src/pages/Customize.jsx` | The "send us your design idea" form. |
-| `src/pages/Contact.jsx` | Phone, email, and "walk in" info. |
+- `src/lib/catalog.js`: shared category navigation and generated concept records.
+- `src/lib/uploaded-designs.json`: fallback catalog of nine previously uploaded Cloudinary designs, with original source URLs retained for reference.
+- `public/designs/`: optimized copies of those uploaded designs.
+- `src/lib/images.js`: Cloudinary public IDs, exact crops and repeated watermark transformations.
+- `netlify/functions/catalog.mjs`: optional server-side live catalog, using credentials stored only in Netlify.
+- `scripts/upload-cloudinary.mjs`: uploads the generated assets without overwriting existing Cloudinary images.
+- `public/images/`: 18 generated subjects, exported as 26 optimized WebP files, including eight portrait variants.
+- `src/pages/Shop.jsx`: garments, stock options and SVG color illustrations.
+- `src/pages/Customize.jsx`: order inquiry form and reference upload.
 
----
+See [the image map](docs/IMAGE-MAP.md), [audit](docs/LAUNCH-REVIEW.md) and [generation prompts](docs/GENERATED-ASSETS.md).
 
-## How to change things
+Photo delivery is connected to Cloudinary cloud `xvnxxkyt`. All content photos use repeated CustomizedTees watermarks. Cloudinary embeds these into the delivered image; until assets are uploaded, local fallbacks display a matching website overlay. Brand logos, app icons and SVG garment illustrations remain unchanged.
 
-- **Edit text on the home page** → open `src/pages/Home.jsx`.
-- **Add/remove a category** in the form → look for `const categories = [` in `src/pages/Customize.jsx`.
-- **Change a color (orange, blue, pink…)** → top of `src/styles.css`, under "COLOR THEMES".
-- **Use a different brand font** → put your `.woff2` or `.ttf` file in a new `public/` folder and update the `@font-face` block at the top of `src/styles.css`.
+To upload generated images, set the Cloudinary API credentials in your local environment and run `npm run upload:images`. Do not commit credentials. See [Cloudinary setup](docs/CLOUDINARY-GUIDE.md).
 
-## The design catalog (Shop page)
+Generated imagery is labeled as illustrative concept artwork. It is not proof of completed orders, inventory or a real store interior. Storefront photographs and brand assets remain original.
 
-The Shop page shows a searchable gallery of the store's own designs, grouped by category.
+## Inquiry integrations
 
-- Design images are hosted on **Cloudinary** and referenced by name, so new designs can be added without changing code. See [`docs/CLOUDINARY-GUIDE.md`](docs/CLOUDINARY-GUIDE.md).
-- The **search box** filters designs by title and category.
-- **"Order This Design"** sends the customer to the Customize form with the design name pre-filled.
+The form uses the existing Web3Forms access key. Reference files are sent to Litterbox for 72 hours unless Cloudinary upload settings are configured in Customize.jsx. This file host exposes a public download URL, as disclosed beside the upload control.
 
----
-
-## The Edo SZ brand font
-
-The store name uses the **Edo SZ** font. Edo SZ is not on Google Fonts.
-
-To use the real font:
-
-1. Get the font file (`edosz.woff2` or `edosz.ttf`).
-2. Create a folder called `public/` next to `src/`.
-3. Drop the file in there.
-4. The CSS already points to `/edosz.woff2` so it will pick it up automatically.
-
-If the file isn't there, the brand name falls back to **Permanent Marker** (a similar brush style from Google Fonts) so the site still looks good.
-
-## How the custom-order form works
-
-Every "Send My Idea" submission is emailed to **customizedtees502@gmail.com** through [Web3Forms](https://web3forms.com). The access key is set at the top of `src/pages/Customize.jsx`.
-
-If the customer attaches a reference image, the browser first uploads it to a file host (Litterbox by default, or Cloudinary if configured in the same file) and includes the download link in the email.
+Browser verification uses simulated upload and submission responses. A real submission and receipt in the store inbox must be checked before the official launch. The third-party Google review widget and maps also need a live visual check.

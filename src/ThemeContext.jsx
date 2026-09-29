@@ -20,13 +20,14 @@ export function ThemeProvider({ children }) {
   // Read the saved theme from the browser, or default to "light"
   const [theme, setTheme] = useState(() => {
     // Default to DARK mode. The user's saved preference (if any) wins.
-    return localStorage.getItem('ct-theme') || 'dark'
+    try { return localStorage.getItem('ct-theme') === 'light' ? 'light' : 'dark' } catch { return 'dark' }
   })
 
   // Whenever the theme changes, update the <html> tag and save it.
   useEffect(() => {
-    document.documentElement.className = theme
-    localStorage.setItem('ct-theme', theme)
+    document.documentElement.classList.remove('light', 'dark')
+    document.documentElement.classList.add(theme)
+    try { localStorage.setItem('ct-theme', theme) } catch { /* Storage is optional. */ }
   }, [theme])
 
   // Flip between light and dark

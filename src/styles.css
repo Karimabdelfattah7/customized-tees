@@ -25,9 +25,7 @@
    =============================================================== */
 @font-face {
   font-family: 'Edo SZ';
-  src: local('Edo SZ'),
-       url('/edosz.woff2') format('woff2'),
-       url('/edosz.ttf')   format('truetype');
+  src: local('Edo SZ');
   font-display: swap;
 }
 
@@ -446,7 +444,6 @@ html.light .hero {
 }
 html.dark .hero h1 { color: #fff }
 html.light .hero h1 { color: #111 }
-.hero-inner { position: relative; z-index: 2; max-width: 900px }
 
 /* Animated paint drips */
 .drop {
@@ -633,7 +630,6 @@ html.light .hero h1 { color: #111 }
   border-radius: 8px;
   overflow: hidden;
   position: relative;
-  cursor: pointer;
   display: flex; align-items: flex-end;
   padding: 18px;
   transition: transform .3s;
@@ -651,9 +647,8 @@ html.light .hero h1 { color: #111 }
 .gallery .card .card-img {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
-  object-fit: contain;
-  background: #fff;     /* DTF designs print on white */
-  padding: 10px;
+  object-fit: cover;
+  background: #202022;
   z-index: 0;
 }
 .cbadge {
@@ -893,7 +888,7 @@ html.light .hero h1 { color: #111 }
 /* Location detail cards */
 .location-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
   gap: 24px;
 }
 .loc-detail {
@@ -922,7 +917,7 @@ html.dark .loc-detail .map {
 }
 .loc-detail .body { padding: 22px }
 .loc-detail .body.center { text-align: center; padding: 40px 22px }
-.loc-detail .body p { color: var(--muted); margin-bottom: 10px }
+.loc-detail .body p { overflow-wrap: anywhere; color: var(--muted); margin-bottom: 10px }
 .loc-detail .body p strong { color: var(--text) }
 .loc-detail .body .btn { margin-top: 12px }
 
@@ -1287,40 +1282,6 @@ html.dark .loc-detail .map {
   display: block;
   object-fit: cover;
 }
-.store-photo-fallback {
-  display: none;
-  position: absolute; inset: 0;
-  flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center;
-  color: var(--muted);
-  padding: 20px;
-  background:
-    radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--orange) 25%, transparent), transparent 60%),
-    radial-gradient(circle at 70% 70%, color-mix(in srgb, var(--blue) 25%, transparent), transparent 60%),
-    var(--bg-alt);
-}
-.store-photo-fallback div:first-child { font-size: 48px; margin-bottom: 8px }
-.store-photo-fallback p {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 20px;
-  letter-spacing: .1em;
-  color: var(--text);
-  text-transform: uppercase;
-}
-.store-photo-fallback small {
-  font-size: 12px;
-  margin-top: 6px;
-}
-.store-photo-fallback code {
-  background: color-mix(in srgb, var(--orange) 20%, transparent);
-  padding: 2px 6px;
-  border-radius: 4px;
-  color: var(--text);
-}
-.store-photo-wrap.no-photo .store-photo-fallback { display: flex }
-
-
 /* ============ 8. CUSTOMIZE PAGE + FORM =======================  */
 .categories {
   display: grid;
@@ -1749,6 +1710,7 @@ button, a, input, select, textarea {
     transition-duration: .001ms !important;
     scroll-behavior: auto !important;
   }
+  .reveal { opacity: 1 !important; transform: none !important; }
   .drop, .float-shirt, .blob, .marquee-track, .brand {
     animation: none !important;
   }
@@ -1853,13 +1815,14 @@ button, a, input, select, textarea {
   position: relative;
   scroll-snap-align: start;
   display: flex; flex-direction: column; justify-content: flex-end;
-  cursor: pointer;
   overflow: hidden;
   box-shadow: 0 20px 50px rgba(0,0,0,.35);
   transition: transform .4s ease;
 }
 .hof-card:hover { transform: translateY(-8px) scale(1.02) }
 .hof-card::before {
+  z-index: 2;
+  pointer-events: none;
   content: "";
   position: absolute; inset: 0;
   background: linear-gradient(180deg, transparent 30%, rgba(0,0,0,.85) 100%);
@@ -2001,3 +1964,18 @@ button, a, input, select, textarea {
   cursor: pointer;
   display: block;
 }
+
+/* Production image presentation and accessibility. */
+.image-caption { position: absolute; left: 16px; bottom: 12px; z-index: 2; color: white; background: #000a; padding: 4px 8px; border-radius: 4px; font-size: 12px; }
+.honeypot { display: none; }
+.design-card__image-wrap { background: #202022; }
+.design-card__img { object-fit: cover; }
+
+.site-image { display: block; overflow: hidden; }
+.site-image__photo { display: block; width: 100%; height: 100%; object-fit: inherit; }
+.site-image__watermark {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='130'%3E%3Ctext x='8' y='85' transform='rotate(-25 150 65)' fill='white' fill-opacity='.35' font-family='Arial,sans-serif' font-size='32' font-weight='700'%3ECustomizedTees%3C/text%3E%3C/svg%3E");
+  background-size: 33.333% auto;
+}
+.store-photo { position: relative; }

@@ -1,0 +1,65 @@
+[
+  {
+    "id": "shop-rappers-1",
+    "category": "rappers",
+    "image": "/designs/shop-rappers-1.webp",
+    "title": "Rappers #1",
+    "cloudImage": "https://res.cloudinary.com/xvnxxkyt/image/upload/f_auto,q_auto/shop-rappers-1"
+  },
+  {
+    "id": "shop-rappers-2",
+    "category": "rappers",
+    "image": "/designs/shop-rappers-2.webp",
+    "title": "Rappers #2",
+    "cloudImage": "https://res.cloudinary.com/xvnxxkyt/image/upload/f_auto,q_auto/shop-rappers-2"
+  },
+  {
+    "id": "shop-anime-1",
+    "category": "anime",
+    "image": "/designs/shop-anime-1.webp",
+    "title": "Anime #1",
+    "cloudImage": "https://res.cloudinary.com/xvnxxkyt/image/upload/f_auto,q_auto/shop-anime-1"
+  },
+  {
+    "id": "shop-football-1",
+    "category": "football",
+    "image": "/designs/shop-football-1.webp",
+    "title": "Football #1",
+    "cloudImage": "https://res.cloudinary.com/xvnxxkyt/image/upload/f_auto,q_auto/shop-football-1"
+  },
+  {
+    "id": "shop-cartoon-1",
+    "category": "cartoon",
+    "image": "/designs/shop-cartoon-1.webp",
+    "title": "Cartoon #1",
+    "cloudImage": "https://res.cloudinary.com/xvnxxkyt/image/upload/f_auto,q_auto/shop-cartoon-1"
+  },
+  {
+    "id": "shop-couples-1",
+    "category": "couples",
+    "image": "/designs/shop-couples-1.webp",
+    "title": "Couples #1",
+    "cloudImage": "https://res.cloudinary.com/xvnxxkyt/image/upload/f_auto,q_auto/shop-couples-1"
+  },
+  {
+    "id": "shop-kids-1",
+    "category": "kids",
+    "image": "/designs/shop-kids-1.webp",
+    "title": "Kids #1",
+    "cloudImage": "https://res.cloudinary.com/xvnxxkyt/image/upload/f_auto,q_auto/shop-kids-1"
+  },
+  {
+    "id": "shop-gaming-1",
+    "category": "gaming",
+    "image": "/designs/shop-gaming-1.webp",
+    "title": "Gaming #1",
+    "cloudImage": "https://res.cloudinary.com/xvnxxkyt/image/upload/f_auto,q_auto/shop-gaming-1"
+  },
+  {
+    "id": "shop-memorial-1",
+    "category": "memorial",
+    "image": "/designs/shop-memorial-1.webp",
+    "title": "Memorial #1",
+    "cloudImage": "https://res.cloudinary.com/xvnxxkyt/image/upload/f_auto,q_auto/shop-memorial-1"
+  }
+]
