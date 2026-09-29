@@ -12,10 +12,10 @@
 // is included. See the settings at the top of the component below.
 // ---------------------------------------------------------------
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import Reveal from '../components/Reveal.jsx'
-import { tryExts } from '../lib/imageFallback.js'
+import SiteImage from '../components/SiteImage.jsx'
 import { imgUrl } from '../lib/images.js'
 
 // ===============================================================
@@ -98,11 +98,12 @@ const BABY_SIZES = SIZE_GROUPS[0].sizes
 const KIDS_SIZES = SIZE_GROUPS[1].sizes
 
 // The garment types we offer. Short Sleeve is the default.
-const GARMENTS = ['Short Sleeve', 'Long Sleeve', 'Hoodie', 'Crew Neck']
+const GARMENTS = ['Short Sleeve', 'Long Sleeve', 'Hoodie', 'Crew Neck', 'Hat']
 
 // Returns the colors available for a given garment + size.
 function colorsFor(garment, size) {
   // Long sleeve / hoodie / crew neck come in black, white, grey only.
+  if (garment === 'Hat') return ['Black', 'White', 'Grey', 'Red', 'Royal Blue', 'Orange', 'Other']
   if (garment && garment !== 'Short Sleeve') return ['Black', 'White', 'Grey', 'Other']
 
   // Short sleeve colors depend on the size group:
@@ -127,12 +128,19 @@ export default function Customize() {
   // use it to pre-fill the idea box so they don't retype it.
   const [params] = useSearchParams()
   const prefillDesign = params.get('design') || ''
+  const prefillGarment = params.get('garment') || ''
+  useEffect(() => {
+    const value = prefillGarment === 'Short Sleeve Tee' ? 'Short Sleeve' : prefillGarment
+    if (GARMENTS.includes(value)) { setGarment(value); setSize(''); setColor('') }
+  }, [prefillGarment])
   const [idea, setIdea] = useState(
     prefillDesign ? `I'd like the "${prefillDesign}" design. ` : ''
   )
 
   // Filename the customer selected for "reference image"
-  const [fileName, setFileName] = useState('')
+  const [attachment, setAttachment] = useState(null)
+  const [attachmentWarning, setAttachmentWarning] = useState('')
+  const fileName = attachment?.name || ''
 
   // Visual styling when customer drags a file over the drop zone
   const [dragOver, setDragOver] = useState(false)
@@ -157,26 +165,30 @@ export default function Customize() {
     { icon: '✨', label: 'Something Else?'      }
   ]
 
-  // Runs when the customer picks a file from their computer
-  const onFileChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setFileName(e.target.files[0].name)
+  const selectFile = (file) => {
+    if (!file) return
+    if (!(file.type.startsWith('image/') || file.type === 'application/pdf') || file.size > 10 * 1024 * 1024) {
+      setError('Choose an image or PDF up to 10 MB.')
+      return
     }
+    setError('')
+    setAttachment(file)
   }
-
-  // Runs when the customer drops a file onto the drop zone
+  const onFileChange = (e) => selectFile(e.target.files?.[0])
   const onDrop = (e) => {
     e.preventDefault()
     setDragOver(false)
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      setFileName(e.dataTransfer.files[0].name)
-    }
+    selectFile(e.dataTransfer.files?.[0])
   }
+  useEffect(() => {
+    setIdea(prefillDesign ? `I'd like the "${prefillDesign}" design. ` : '')
+  }, [prefillDesign])
 
   // Runs when the customer clicks "Send My Idea"
   const onSubmit = async (e) => {
     e.preventDefault()
     setError('')
+    setAttachmentWarning('')
     const form = e.currentTarget
     const data = new FormData(form)
 
@@ -199,8 +211,7 @@ export default function Customize() {
         `mailto:customizedtees502@gmail.com` +
         `?subject=${encodeURIComponent('New Custom Design Request')}` +
         `&body=${encodeURIComponent(body)}`
-      setSent(true)
-      window.scrollTo({ top: 0, behavior: 'smooth' })
+      setError('Your email app has opened. Send the email there to complete your request.')
       return
     }
 
@@ -210,7 +221,7 @@ export default function Customize() {
       // Web3Forms can't carry the file itself, so we remove it and —
       // if one was chosen — upload it to a file host and email you the
       // download link instead.
-      const file = data.get('attachment')
+      const file = attachment
       data.delete('attachment')
       if (file && file instanceof File && file.size > 0) {
         try {
@@ -219,7 +230,7 @@ export default function Customize() {
           data.append('reference_image_url', url)
           data.append('reference_image_name', file.name)
         } catch (uploadErr) {
-          // Upload failed — still send the request, just note it.
+          setAttachmentWarning('Your request was sent, but the attachment could not upload. Please text your reference image to 502-232-3703.')
           data.append('reference_image_name', file.name)
           data.append(
             'note',
@@ -230,6 +241,8 @@ export default function Customize() {
           setUploadingFile(false)
         }
       }
+      if (data.get('color') === 'Other') data.set('color', data.get('custom_color'))
+      data.delete('custom_color')
       data.append('access_key', WEB3FORMS_ACCESS_KEY)
       data.append('subject', 'New Custom Design Request — Customized Tees')
       data.append('from_name', 'Customized Tees Website')
@@ -238,7 +251,7 @@ export default function Customize() {
         body: data
       })
       const json = await res.json()
-      if (json.success) {
+      if (res.ok && json.success) {
         setSent(true)
         window.scrollTo({ top: 0, behavior: 'smooth' })
       } else {
@@ -288,7 +301,8 @@ export default function Customize() {
           <Reveal>
             <div className="section-title">
               <div className="kicker">Sample Designs</div>
-              <h2>What We've <span className="accent-pink">Printed</span></h2>
+              <h2>Imagine Your <span className="accent-pink">Custom Print</span></h2>
+              <p>AI-generated design examples. Our team confirms the final artwork before printing.</p>
             </div>
           </Reveal>
           {/* Add your photos in public/samples/1.jpg … 8.jpg to replace
@@ -307,12 +321,11 @@ export default function Customize() {
             ].map((s, i) => (
               <Reveal key={i} className={'card ' + s.c}>
                 <span className={'cbadge ' + s.badge}>{s.tag}</span>
-                <img
+                <SiteImage
                   className="card-img"
                   src={imgUrl(`sample-${i + 1}`, `samples/${i + 1}`)}
                   alt={s.label}
                   loading="lazy"
-                  onError={tryExts(`samples/${i + 1}`, (e) => { e.currentTarget.style.display = 'none' })}
                 />
                 <span className="clabel">{s.label}</span>
               </Reveal>
@@ -333,37 +346,38 @@ export default function Customize() {
               </Reveal>
 
               <form className="inquiry" onSubmit={onSubmit}>
+                <input type="checkbox" name="botcheck" className="honeypot" tabIndex="-1" aria-hidden="true" />
                 <div className="row">
                   <div className="field">
-                    <label>Full Name *</label>
-                    <input type="text" name="name" required placeholder="Jane Doe" />
+                    <label htmlFor="order-name">Full Name *</label>
+                    <input id="order-name" type="text" name="name" required placeholder="Jane Doe" />
                   </div>
                   <div className="field">
-                    <label>Phone Number *</label>
-                    <input type="tel" name="phone" required placeholder="(502) 232-3703" />
+                    <label htmlFor="order-phone">Phone Number *</label>
+                    <input id="order-phone" type="tel" name="phone" required placeholder="(502) 232-3703" />
                     <div className="hint">Our team will text or call you back</div>
                   </div>
                 </div>
 
                 <div className="row">
                   <div className="field">
-                    <label>Email *</label>
-                    <input type="email" name="email" required placeholder="you@example.com" />
+                    <label htmlFor="order-email">Email *</label>
+                    <input id="order-email" type="email" name="email" required placeholder="you@example.com" />
                   </div>
                   <div className="field">
-                    <label>Quantity *</label>
-                    <input type="number" name="quantity" required min="1" defaultValue="1" />
+                    <label htmlFor="order-quantity">Quantity *</label>
+                    <input id="order-quantity" type="number" name="quantity" required min="1" defaultValue="1" />
                     <div className="hint">How many pieces do you need?</div>
                   </div>
                 </div>
 
                 <div className="field">
-                  <label>Garment Type *</label>
+                  <label htmlFor="order-garment">Garment Type *</label>
                   <select
-                    name="garment"
+                    id="order-garment" name="garment"
                     required
                     value={garment}
-                    onChange={(e) => { setGarment(e.target.value); setColor('') }}
+                    onChange={(e) => { setGarment(e.target.value); setSize(''); setColor('') }}
                   >
                     {GARMENTS.map(g => <option key={g} value={g}>{g}</option>)}
                   </select>
@@ -371,15 +385,15 @@ export default function Customize() {
 
                 <div className="row">
                   <div className="field">
-                    <label>Size *</label>
+                    <label htmlFor="order-size">Size *</label>
                     <select
-                      name="size"
+                      id="order-size" name="size"
                       required
                       value={size}
                       onChange={(e) => { setSize(e.target.value); setColor('') }}
                     >
                       <option value="" disabled>Choose a size...</option>
-                      {SIZE_GROUPS.map(g => (
+                      {(garment === 'Hat' ? [{ label: 'Fit', sizes: ['Adjustable'] }] : garment === 'Short Sleeve' ? SIZE_GROUPS : [SIZE_GROUPS[2]]).map(g => (
                         <optgroup key={g.label} label={g.label}>
                           {g.sizes.map(s => <option key={s} value={s}>{s}</option>)}
                         </optgroup>
@@ -387,9 +401,9 @@ export default function Customize() {
                     </select>
                   </div>
                   <div className="field">
-                    <label>Color *</label>
+                    <label htmlFor="order-color">Color *</label>
                     <select
-                      name="color"
+                      id="order-color" name="color"
                       required
                       value={color}
                       onChange={(e) => setColor(e.target.value)}
@@ -403,7 +417,7 @@ export default function Customize() {
                     {color === 'Other' && (
                       <input
                         type="text"
-                        name="custom_color"
+                        name="custom_color" aria-label="Requested custom color"
                         required
                         placeholder="Tell us the color you want"
                         style={{ marginTop: '8px' }}
@@ -413,8 +427,8 @@ export default function Customize() {
                 </div>
 
                 <div className="field">
-                  <label>Type of Occasion *</label>
-                  <select name="occasion" required defaultValue="">
+                  <label htmlFor="order-occasion">Type of Occasion *</label>
+                  <select id="order-occasion" name="occasion" required defaultValue="">
                     <option value="" disabled>Choose one...</option>
                     <option>Graduation</option>
                     <option>Memorial</option>
@@ -427,9 +441,9 @@ export default function Customize() {
                 </div>
 
                 <div className="field">
-                  <label>Describe your design idea *</label>
+                  <label htmlFor="order-idea">Describe your design idea *</label>
                   <textarea
-                    name="idea"
+                    id="order-idea" name="idea"
                     required
                     value={idea}
                     onChange={(e) => setIdea(e.target.value)}
@@ -439,7 +453,7 @@ export default function Customize() {
 
                 {/* File upload (drag-and-drop) */}
                 <div className="field">
-                  <label>Attach a Reference Image (optional)</label>
+                  <label htmlFor="file-input">Attach a Reference Image (optional)</label>
                   <label
                     htmlFor="file-input"
                     className={'drop-zone ' + (dragOver ? 'dragover' : '')}
@@ -448,7 +462,7 @@ export default function Customize() {
                     onDrop={onDrop}
                   >
                     <p>📎 Drag &amp; drop or <strong>click to upload</strong></p>
-                    <p className="small">Any file type — sent straight to our team</p>
+                    <p className="small">Images or PDFs up to 10 MB. References are uploaded to a public file host for 72 hours.</p>
                     {fileName && <p className="file-name">✓ {fileName}</p>}
                     <input
                       id="file-input"
@@ -481,6 +495,7 @@ export default function Customize() {
             <div className="success-msg">
               <h3>You're In! ✦</h3>
               <p className="big">Thanks — we got your idea. Expect a text or call from us within 24 hours.</p>
+              <p role="status">{attachmentWarning}</p>
               <p className="small-note">In a hurry? Walk into Jefferson Mall or St Matthews Mall today.</p>
             </div>
           )}

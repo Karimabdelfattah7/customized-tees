@@ -15,19 +15,18 @@
 import { Link } from 'react-router-dom'
 import Reveal from '../components/Reveal.jsx'
 import Reviews from '../components/Reviews.jsx'
-import { tryExts } from '../lib/imageFallback.js'
+import SiteImage from '../components/SiteImage.jsx'
 import { imgUrl } from '../lib/images.js'
 
 // The six "Recent Work" cards.
-//   Add your photo via Cloudinary (recent/1 … recent/6). Until then a
-//   colored placeholder card shows.
+//   Shared generated assets are mapped in src/lib/images.js.
 const recentWork = [
-  { tag: 'ANIME',    badge: 'orange', label: 'Anime Prints',     img: 'recent/1.jpg' },
-  { tag: 'BIRTHDAY', badge: 'blue',   label: 'Birthday Bash',    img: 'recent/2.jpg' },
-  { tag: 'MEMORIAL', badge: 'pink',   label: 'In Loving Memory', img: 'recent/3.jpg' },
-  { tag: 'NBA',      badge: 'orange', label: 'Hoops Season',     img: 'recent/4.jpg' },
-  { tag: 'COUPLES',  badge: 'blue',   label: 'His & Hers',       img: 'recent/5.jpg' },
-  { tag: 'FOOTBALL', badge: 'pink',   label: 'Game Day',         img: 'recent/6.jpg' }
+  { tag: 'ANIME',    badge: 'orange', label: 'Anime Prints' },
+  { tag: 'BIRTHDAY', badge: 'blue',   label: 'Birthday Bash' },
+  { tag: 'MEMORIAL', badge: 'pink',   label: 'In Loving Memory' },
+  { tag: 'BASKETBALL',      badge: 'orange', label: 'Hoops Season' },
+  { tag: 'COUPLES',  badge: 'blue',   label: 'His & Hers' },
+  { tag: 'FOOTBALL', badge: 'pink',   label: 'Game Day' }
 ]
 
 export default function Home() {
@@ -74,7 +73,7 @@ export default function Home() {
             <div className="stat"><div className="num">15<span>min</span></div><p>Average Turnaround</p></div>
             <div className="stat"><div className="num">280<span>+</span></div><p>Ready-Made Designs</p></div>
             <div className="stat"><div className="num">2<span>×</span></div><p>Mall Locations</p></div>
-            <div className="stat"><div className="num">10<span>yr</span></div><p>Serving Louisville</p></div>
+            <div className="stat"><div className="num">2015</div><p>Serving Louisville Since</p></div>
           </div>
         </div>
       </section>
@@ -98,7 +97,7 @@ export default function Home() {
               <p>
                 Bulk pricing starts at <strong>15 shirts</strong> — and we print fast.
                 Walk in or send your design and we'll have your bulk order ready
-                quicker than anyone in town.
+                on a timeline confirmed with our team.
               </p>
             </div>
             <Link className="btn big" to="/customize" state={{ scrollTo: 'order-form' }}>Start Bulk Order</Link>
@@ -132,7 +131,7 @@ export default function Home() {
               </Reveal>
               <Reveal>
                 <h3>03 — Walk Out</h3>
-                <p>Same-day pickup. Most orders are done in 15 minutes. Bigger bulk runs ship out faster than anywhere else in Louisville.</p>
+                <p>Same-day pickup. Most orders are done in 15 minutes. Ask our team about timing for larger orders.</p>
               </Reveal>
             </div>
           </div>
@@ -149,38 +148,31 @@ export default function Home() {
             <div className="hof-head">
               <div>
                 <div className="kicker">★ Hall Of Designs</div>
-                <h2>Some of Our <span className="accent-orange">Greatest Hits</span></h2>
+                <h2>Find Your <span className="accent-orange">Next Design</span></h2>
               </div>
-              <p className="muted">← swipe / scroll →</p>
+              <p className="muted">Illustrative mockups · swipe to explore</p>
             </div>
           </Reveal>
         </div>
         <div className="hof-track">
           {[
-            // "img" = optional real photo. Save photos into public/hof/
-            // (e.g. public/hof/1.jpg) and they appear automatically.
-            // If a photo is missing the card falls back to the colored
-            // gradient + the big icon, so it never looks empty.
-            { title: 'Class Of 2025',    tag: 'GRADUATION', c: 'c1', icon: '🎓', img: 'hof/1.jpg' },
-            { title: 'In Loving Memory', tag: 'MEMORIAL',   c: 'c3', icon: '🕊',  img: 'hof/2.jpg' },
-            { title: 'Sweet Sixteen',    tag: 'BIRTHDAY',   c: 'c4', icon: '🎂', img: 'hof/3.jpg' },
-            { title: 'Coach\'s Squad',   tag: 'SPORTS',     c: 'c6', icon: '🏆', img: 'hof/4.jpg' },
-            { title: 'Family Reunion',   tag: 'EVENT',      c: 'c5', icon: '🎉', img: 'hof/5.jpg' },
-            { title: 'King & Queen',     tag: 'COUPLES',    c: 'c7', icon: '💕', img: 'hof/6.jpg' },
-            { title: 'Local Hustle Co.', tag: 'BUSINESS',   c: 'c2', icon: '💼', img: 'hof/7.jpg' },
-            { title: 'Block Party',      tag: 'COMMUNITY',  c: 'c8', icon: '🤝', img: 'hof/8.jpg' }
+            { title: 'Class Of 2026',    tag: 'GRADUATION', c: 'c1' },
+            { title: 'In Loving Memory', tag: 'MEMORIAL',   c: 'c3',  img: 'hof/2.jpg' },
+            { title: 'Sweet Sixteen',    tag: 'BIRTHDAY',   c: 'c4' },
+            { title: 'Coach\'s Squad',   tag: 'SPORTS',     c: 'c6' },
+            { title: 'Family Reunion',   tag: 'EVENT',      c: 'c5' },
+            { title: 'King & Queen',     tag: 'COUPLES',    c: 'c7' },
+            { title: 'Local Hustle Co.', tag: 'BUSINESS',   c: 'c2' },
+            { title: 'Block Party',      tag: 'COMMUNITY',  c: 'c8' }
           ].map((card, i) => (
             <div key={card.title} className={'hof-card ' + card.c}>
-              {/* Optional real photo — hides itself if the file is
-                  missing, revealing the gradient + icon underneath. */}
-              <img
+              {/* Generated concept image with a matching portrait crop. */}
+              <SiteImage
                 className="hof-img"
                 src={imgUrl('hof-' + (i + 1), 'hof/' + (i + 1))}
                 alt={card.title + ' custom shirt'}
                 loading="lazy"
-                onError={tryExts('hof/' + (i + 1), (e) => { e.currentTarget.style.display = 'none' })}
               />
-              <span className="hof-icon" aria-hidden="true">{card.icon}</span>
               <span className="hof-num">{String(i + 1).padStart(2, '0')}</span>
               <div className="hof-foot">
                 <div className="hof-tag">{card.tag}</div>
@@ -205,7 +197,7 @@ export default function Home() {
             <Reveal className="feature">
               <div className="num">01</div>
               <h3>Ready In 15 Minutes</h3>
-              <p>Walk in with an idea, walk out with the shirt. Same-day printing on every order.</p>
+              <p>Walk in with an idea, walk out with the shirt. Ask our team about same-day availability for your order.</p>
             </Reveal>
             <Reveal className="feature">
               <div className="num">02</div>
@@ -226,9 +218,9 @@ export default function Home() {
         <div className="container">
           <Reveal>
             <div className="section-title">
-              <div className="kicker">Recent Work</div>
+              <div className="kicker">Design Inspiration</div>
               <h2>Built For <span className="accent-blue">Every Occasion</span></h2>
-              <p>A peek at the kind of custom prints we do every day.</p>
+              <p>AI-generated mockups to help you picture your idea. Final artwork is confirmed with our team.</p>
             </div>
           </Reveal>
 
@@ -238,12 +230,11 @@ export default function Home() {
                 <span className={'cbadge ' + w.badge}>{w.tag}</span>
                 {/* Shows YOUR photo (recent/N); if it isn't there yet,
                     the colored card underneath shows. */}
-                <img
+                <SiteImage
                   className="card-img"
                   src={imgUrl('recent-' + (i + 1), 'recent/' + (i + 1))}
                   alt={w.label}
                   loading="lazy"
-                  onError={tryExts('recent/' + (i + 1), (e) => { e.currentTarget.style.display = 'none' })}
                 />
                 <span className="clabel">{w.label}</span>
               </Reveal>
@@ -254,8 +245,7 @@ export default function Home() {
 
       {/* ============ GOOGLE REVIEWS ============
         Shows live auto-refreshing reviews once a free widget service
-        is connected (see src/components/Reviews.jsx), otherwise sample
-        reviews. */}
+        is available (see src/components/Reviews.jsx). */}
       <Reviews />
 
       {/* ============ CARE INSTRUCTIONS ============ */}

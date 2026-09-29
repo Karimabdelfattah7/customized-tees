@@ -6,7 +6,7 @@
 // hamburger menu for phones.
 // ---------------------------------------------------------------
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useTheme } from '../ThemeContext.jsx'
 import Logo from './Logo.jsx'
@@ -14,6 +14,11 @@ import Logo from './Logo.jsx'
 export default function Navbar() {
   // Is the phone menu open? (true / false)
   const [menuOpen, setMenuOpen] = useState(false)
+  useEffect(() => {
+    const onKey = e => { if (e.key === 'Escape') setMenuOpen(false) }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [])
 
   // Get the current theme and the function to flip it
   const { theme, toggle } = useTheme()
@@ -102,7 +107,7 @@ export default function Navbar() {
             <button
               className="hamburger"
               onClick={() => setMenuOpen(true)}
-              aria-label="Open menu"
+              aria-label="Open menu" aria-expanded={menuOpen} aria-controls="mobile-menu"
             >
               ☰
             </button>
@@ -111,8 +116,8 @@ export default function Navbar() {
       </nav>
 
       {/* Phone slide-in menu */}
-      <div className={'mobile-menu ' + (menuOpen ? 'open' : '')}>
-        <button className="close" onClick={() => setMenuOpen(false)}>✕</button>
+      <div id="mobile-menu" className={'mobile-menu ' + (menuOpen ? 'open' : '')} inert={menuOpen ? undefined : ''} aria-hidden={!menuOpen}>
+        <button aria-label="Close menu" className="close" onClick={() => setMenuOpen(false)}>✕</button>
 
         {/* Search row inside the mobile menu too */}
         <button className="mobile-search" onClick={goSearch}>

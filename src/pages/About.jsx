@@ -6,7 +6,7 @@
 // ---------------------------------------------------------------
 
 import Reveal from '../components/Reveal.jsx'
-import { tryExts } from '../lib/imageFallback.js'
+import SiteImage from '../components/SiteImage.jsx'
 import { imgUrl } from '../lib/images.js'
 
 // Store hours (same for both locations):
@@ -47,15 +47,14 @@ export default function About() {
       <section className="block">
         <div className="container">
           <div className="story">
-            {/* Add public/about.jpg to replace this colorful block with
-                your own photo. */}
+            {/* Illustrative studio scene; storefront photos below are original. */}
             <Reveal className="story-img">
-              <img
+              <SiteImage
                 className="story-photo"
                 src={imgUrl('about', 'about')}
-                alt="Customized Tees custom shirts"
-                onError={tryExts('about', (e) => { e.currentTarget.style.display = 'none' })}
+                alt="Illustrative custom apparel and heat press scene"
               />
+              <span className="image-caption">Illustrative studio scene</span>
             </Reveal>
             <Reveal>
               <h2>Our <span className="brand-script accent-orange">Story</span></h2>
@@ -90,20 +89,11 @@ export default function About() {
               {/* If the photo file is missing, a styled placeholder is
                   shown instead so the layout still looks finished. */}
               <div className="store-photo-wrap">
-                <img
+                <SiteImage
                   className="store-photo"
                   src={imgUrl('stmatthews-store', 'stmatthews-store')}
                   alt="Customized Tees storefront — St Matthews location"
-                  onError={tryExts('stmatthews-store', (e) => {
-                    e.currentTarget.style.display = 'none'
-                    e.currentTarget.parentElement.classList.add('no-photo')
-                  })}
                 />
-                <div className="store-photo-fallback">
-                  <div>📸</div>
-                  <p>Storefront photo</p>
-                  <small>Save the photo as <code>public/stmatthews-store.jpg</code></small>
-                </div>
               </div>
               <iframe
                 className="map"
@@ -139,20 +129,11 @@ export default function About() {
                 <p>Louisville, KY</p>
               </div>
               <div className="store-photo-wrap">
-                <img
+                <SiteImage
                   className="store-photo"
                   src={imgUrl('jefferson-store', 'jefferson-store')}
                   alt="Customized Tees storefront — Jefferson Mall location"
-                  onError={tryExts('jefferson-store', (e) => {
-                    e.currentTarget.style.display = 'none'
-                    e.currentTarget.parentElement.classList.add('no-photo')
-                  })}
                 />
-                <div className="store-photo-fallback">
-                  <div>📸</div>
-                  <p>Storefront photo</p>
-                  <small>Save the photo as <code>public/jefferson-store.jpg</code></small>
-                </div>
               </div>
               <iframe
                 className="map"

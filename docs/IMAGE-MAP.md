@@ -1,104 +1,70 @@
-# Customized Tees — Every Image on the Site & How to Change It
+# Complete image map
 
-## THE GOLDEN RULE
-For almost every image: **put a file with the exact name into the exact
-folder inside `public/`, then push to GitHub.** Netlify auto-deploys.
-No code editing. Until a file exists, a placeholder shows automatically —
-nothing ever looks broken.
+35 generated image placements use 18 original subjects and 26 local fallback files. Each has a stable Cloudinary public ID matching its local filename: `ct-concept-<filename-without-extension>`. Shared subjects reuse the same square file; the eight tall cards have separate portrait crops. The nine previously uploaded shop designs are preserved separately.
 
-Recommended: square photos ~1000x1000 JPG (the About story + storefronts
-look best landscape ~1200x900). File names are case-sensitive.
+## Generated image placements
 
----
+| Placement | Asset path | Display ratio | Source |
+|---|---|---|---|
+| Home: inspiration 1 | `/images/anime.webp` | 1:1 | Generated concept |
+| Home: inspiration 2 | `/images/birthday.webp` | 1:1 | Generated concept |
+| Home: inspiration 3 | `/images/memorial.webp` | 1:1 | Generated concept |
+| Home: inspiration 4 | `/images/nba.webp` | 1:1 | Generated concept |
+| Home: inspiration 5 | `/images/couples.webp` | 1:1 | Generated concept |
+| Home: inspiration 6 | `/images/football.webp` | 1:1 | Generated concept |
+| Home: tall showcase 1 | `/images/graduation-portrait.webp` | 3:4 | Generated concept |
+| Home: tall showcase 2 | `/images/memorial-portrait.webp` | 3:4 | Generated concept |
+| Home: tall showcase 3 | `/images/birthday-portrait.webp` | 3:4 | Generated concept |
+| Home: tall showcase 4 | `/images/sports-portrait.webp` | 3:4 | Generated concept |
+| Home: tall showcase 5 | `/images/reunion-portrait.webp` | 3:4 | Generated concept |
+| Home: tall showcase 6 | `/images/couples-portrait.webp` | 3:4 | Generated concept |
+| Home: tall showcase 7 | `/images/business-portrait.webp` | 3:4 | Generated concept |
+| Home: tall showcase 8 | `/images/community-portrait.webp` | 3:4 | Generated concept |
+| Customize: examples 1 | `/images/graduation.webp` | 1:1 | Generated concept |
+| Customize: examples 2 | `/images/memorial.webp` | 1:1 | Generated concept |
+| Customize: examples 3 | `/images/sports.webp` | 1:1 | Generated concept |
+| Customize: examples 4 | `/images/birthday.webp` | 1:1 | Generated concept |
+| Customize: examples 5 | `/images/business.webp` | 1:1 | Generated concept |
+| Customize: examples 6 | `/images/reunion.webp` | 1:1 | Generated concept |
+| Customize: examples 7 | `/images/couples.webp` | 1:1 | Generated concept |
+| Customize: examples 8 | `/images/community.webp` | 1:1 | Generated concept |
+| Shop: rappers example | `/images/rappers.webp` | 1:1 | Generated concept |
+| Shop: anime example | `/images/anime.webp` | 1:1 | Generated concept |
+| Shop: nba example | `/images/nba.webp` | 1:1 | Generated concept |
+| Shop: football example | `/images/football.webp` | 1:1 | Generated concept |
+| Shop: cartoon example | `/images/cartoon.webp` | 1:1 | Generated concept |
+| Shop: couples example | `/images/couples.webp` | 1:1 | Generated concept |
+| Shop: kids example | `/images/kids.webp` | 1:1 | Generated concept |
+| Shop: gaming example | `/images/gaming.webp` | 1:1 | Generated concept |
+| Shop: movies example | `/images/movies.webp` | 1:1 | Generated concept |
+| Shop: memes example | `/images/memes.webp` | 1:1 | Generated concept |
+| Shop: memorial example | `/images/memorial.webp` | 1:1 | Generated concept |
+| Shop: birthdays example | `/images/birthday.webp` | 1:1 | Generated concept |
+| About: story | `/images/about.webp` | 4:3 | Generated studio illustration |
 
-## NAVBAR + FOOTER
-### 1. Logo (top-left + footer)
-- Shows: the tie-dye "Customized Tees" wordmark in the navbar and footer.
-- File to change: **`src/assets/logo.png`**  (white letters on a black background)
-- NOTE: this one lives in `src/assets/`, NOT `public/`, because it gets
-  embedded into the page. Replace the file, keep the name `logo.png`.
+Square assets are 900 × 900 pixels, portrait assets 900 × 1200 pixels and the About asset 1200 × 900 pixels. Original generated PNGs were visually reviewed, then converted and center-cropped to match the containers. All WebP files were decoded and verified.
 
----
+## Existing assets and illustrations
 
-## HOME PAGE
-### 2. "Recent Work" strip (6 cards)
-- Add files: **`public/recent/1.jpg` … `public/recent/6.jpg`**
-- Order: 1=Anime, 2=Birthday, 3=Memorial, 4=NBA, 5=Couples, 6=Football
-- Code (if ever needed): `src/pages/Home.jsx` → `recentWork` list
+| Placement | Asset | Display behavior |
+|---|---|---|
+| Navbar and footer logo | `src/assets/logo.png` | Existing tie-dye mask, intrinsic aspect ratio |
+| About: St Matthews | `public/stmatthews-store.jpg` | Existing photograph, 4:3 cover crop |
+| About: Jefferson Mall | `public/jefferson-store.jpg` | Existing photograph, 4:3 cover crop |
+| Browser tab / Apple touch icon | `public/favicon.png` | Existing brand icon |
+| Installable app icons | `public/icon-192.png`, `public/icon-512.png` | Existing brand icons |
+| Social preview | `public/og-image.png` | Existing brand art, live Netlify URL corrected |
+| Shop: previously uploaded designs | `public/designs/*.webp` | Nine original designs, contain fit in square cards |
+| Shop: blank garments / hats | `src/components/ShirtMockup.jsx` | Existing vector illustrations, five types and 24 color presentations |
+| Hero, category icons and care icons | CSS, inline SVG and text | Intentional decoration, no empty raster image slot |
+| Location maps | Google Maps iframes | Live maps, no image replacement |
 
-### 3. "Hall of Designs" horizontal cards (8 cards)
-- Add files: **`public/hof/1.jpg` … `public/hof/8.jpg`**
-- Order: 1=Graduation, 2=Memorial, 3=Birthday, 4=Sports, 5=Event,
-  6=Couples, 7=Business, 8=Community
-- Code: `src/pages/Home.jsx` → the "Hall Of Designs" array
+## Replacing an image later
 
-(The hero at the very top is CSS art — no image to change.)
+In Cloudinary, replace the asset while keeping its public ID. For example, the square graduation image is `ct-concept-graduation`, and its tall variant is `ct-concept-graduation-portrait`. Invalidate cached versions when overwriting. Watermarks are applied automatically by the website's Cloudinary delivery URL to every replacement.
 
----
+Before the generated images have been uploaded, the site displays the matching local WebP fallback. These fallback files have a repeated visible website overlay, while Cloudinary-served images have an embedded watermark that remains when the delivered image is saved.
 
-## SHOP PAGE
-### 4. "Shop by Category" design galleries (the main product wall)
-- Add files: **`public/shop/<category>/1.jpg`, `2.jpg`, `3.jpg` …**
-  (as many as you want per category, numbered in order, no gaps)
-- Categories (folder names):
-  rappers, anime, nba, football, cartoon, couples, kids, gaming, movies,
-  memes, memorial, birthdays
-- Example: `public/shop/couples/1.jpg`, `public/shop/couples/2.jpg`
-- Code: `src/components/DesignGallery.jsx`
+For newly added shop images, keep the `shop-<category>-<number>` naming convention. With server-side Cloudinary credentials configured in Netlify, the catalog function discovers these without browser-side probing. Cloudinary metadata's caption supplies the title. If this optional function is not configured or temporarily unavailable, the nine known uploaded designs remain available.
 
-### 5. "Your Canvas" blanks (Short Sleeve, Hoodie, Crew, Long, Hat)
-- These are DRAWN shirt illustrations (not photos) that say "YOUR DESIGN
-  HERE". They're intentional. To swap them for real blank photos, that
-  needs a code change — ask me. File: `src/components/ShirtMockup.jsx`.
-
----
-
-## CUSTOMIZE PAGE
-### 6. "What We've Printed" sample gallery (8 cards)
-- Add files: **`public/samples/1.jpg` … `public/samples/8.jpg`**
-- Order: 1=Graduation, 2=Memorial, 3=Team Jersey, 4=Birthday,
-  5=Company Tee, 6=Family Reunion, 7=His & Hers, 8=Community Drive
-- Code: `src/pages/Customize.jsx`
-
----
-
-## ABOUT / FIND US PAGE
-### 7. "Our Story" photo
-- Add file: **`public/about.jpg`**  (landscape ~1200x900 looks best)
-- Code: `src/pages/About.jsx`
-
-### 8. St Matthews storefront photo   ✅ ALREADY ADDED
-- File: **`public/stmatthews-store.jpg`**  (replace to update)
-
-### 9. Jefferson Mall storefront photo   ✅ ALREADY ADDED
-- File: **`public/jefferson-store.jpg`**  (replace to update)
-
-(The two maps are live Google Maps, not images — nothing to change.)
-
----
-
-## BRAND / SHARING IMAGES (optional)
-### 10. Browser-tab icon (favicon) + phone app icons
-- Files: **`public/favicon.png`**, **`public/icon-192.png`**, **`public/icon-512.png`**
-
-### 11. Social-share preview (shows when the link is shared)
-- File: **`public/og-image.png`**  (1200x630)
-
----
-
-## HOW TO ACTUALLY DO IT (two ways)
-
-### Way A — you drop files in, then push
-1. Put your images into the folders above (exact names).
-2. In a terminal:
-       cd D:\customized-tees
-       git add -A
-       git commit -m "add images"
-       git push
-3. Netlify rebuilds and publishes automatically (~1 min).
-
-### Way B — send them to me
-Send me the images (keep these filenames). I'll place them all and push.
-
-TIP: The 59 prompts in `AI-IMAGE-PROMPTS.md` already list these exact
-filenames next to each prompt, so generated images drop straight in.
+See [Cloudinary setup](CLOUDINARY-GUIDE.md) for credential handling and upload instructions.

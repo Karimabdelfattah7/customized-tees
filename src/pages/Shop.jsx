@@ -13,27 +13,16 @@
 // To add/remove an item, edit the arrays at the top of this file.
 // ---------------------------------------------------------------
 
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Reveal from '../components/Reveal.jsx'
 import ShirtMockup from '../components/ShirtMockup.jsx'
 import DesignGallery from '../components/DesignGallery.jsx'
+import { CATEGORIES } from '../lib/catalog.js'
 
 // ============ EDIT ME — Theme categories ============
 // Add/remove entries here and the page updates automatically.
-const themes = [
-  { label: 'Rap',       icon: '🎤', tint: '#FF2D87' },
-  { label: 'Anime',     icon: '🌀', tint: '#FF6B00' },
-  { label: 'NBA',       icon: '🏀', tint: '#FF8C00' },
-  { label: 'Football',  icon: '🏈', tint: '#8B4513' },
-  { label: 'Cartoon',   icon: '🎨', tint: '#00AAFF' },
-  { label: 'Couples',   icon: '💕', tint: '#FF1493' },
-  { label: 'Kids',      icon: '🧸', tint: '#FFD23F' },
-  { label: 'Gaming',    icon: '🎮', tint: '#7C3AED' },
-  { label: 'Movies',    icon: '🎬', tint: '#DC2626' },
-  { label: 'Memes',     icon: '😂', tint: '#22C55E' },
-  { label: 'Memorial',  icon: '🕊',  tint: '#6B7280' },
-  { label: 'Birthdays', icon: '🎂', tint: '#FF6B00' }
-]
+const themes = CATEGORIES
 
 // ============ EDIT ME — Sizes the store stocks ============
 const sizes = ['S', 'M', 'L', 'XL', '2X', '3X', '4X', '5X']
@@ -92,6 +81,7 @@ const items = [
 ]
 
 export default function Shop() {
+  const [query, setQuery] = useState('')
   return (
     <div>
       {/* Top banner */}
@@ -110,7 +100,7 @@ export default function Shop() {
             <div className="section-title">
               <div className="kicker">Themes</div>
               <h2>Shop By <span className="accent-orange">Vibe</span></h2>
-              <p>We do thousands of designs across every fandom you can name. Don't see yours? Just ask.</p>
+              <p>Explore a design theme, then work with our team to make it yours.</p>
             </div>
           </Reveal>
 
@@ -130,7 +120,7 @@ export default function Shop() {
                   className="theme-inner"
                   style={{ '--tint': t.tint }}
                   onClick={() => {
-                    window.dispatchEvent(new CustomEvent('ct-search', { detail: t.label }))
+                    setQuery(t.label)
                     document.getElementById('designs')?.scrollIntoView({ behavior: 'smooth' })
                   }}
                   aria-label={`Show ${t.label} designs`}
@@ -147,7 +137,7 @@ export default function Shop() {
       {/* ============ SEARCHABLE DESIGN GALLERY ============
           Your uploaded designs grouped by category, with a live search
           box. Images come from Cloudinary (see docs/CLOUDINARY-GUIDE.md). */}
-      <DesignGallery />
+      <DesignGallery query={query} onQueryChange={setQuery} />
 
       {/* ============ PLAIN APPAREL ============ */}
       <section className="block alt">
@@ -158,7 +148,7 @@ export default function Shop() {
               <h2>Your <span className="accent-blue">Canvas</span></h2>
               <p>
                 Quality Gildan and Valucap blanks ready for your design. Available in
-                sizes <strong>S through 5X</strong> and the colors below.
+                sizes <strong>S through 5X</strong> and the colors below. Sizes and colors vary by garment; our team confirms stock before printing.
               </p>
             </div>
           </Reveal>
@@ -195,15 +185,15 @@ export default function Shop() {
                     <p className="muted">{item.note}</p>
 
                     <div className="opt-group">
-                      <div className="opt-label">Sizes available</div>
+                      <div className="opt-label">{item.type === 'hat' ? 'Fit' : 'Adult sizes'}</div>
                       <div className="sizes">
-                        {sizes.map(s => <span key={s} className="size-pill">{s}</span>)}
+                        {(item.type === 'hat' ? ['Adjustable'] : sizes).map(s => <span key={s} className="size-pill">{s}</span>)}
                       </div>
                     </div>
 
                     <div className="opt-group">
                       <div className="opt-label">
-                        Colors available ({itemColors.length})
+                        Color options ({itemColors.length})
                       </div>
                       <div className="swatches">
                         {itemColors.map(c => (
@@ -217,7 +207,7 @@ export default function Shop() {
                       </div>
                     </div>
 
-                    <Link className="btn" to="/customize" state={{ scrollTo: 'order-form' }}>Customize This</Link>
+                    <Link className="btn" to={`/customize?garment=${encodeURIComponent(item.name)}`} state={{ scrollTo: 'order-form' }}>Customize This</Link>
                   </div>
                 </Reveal>
               )
