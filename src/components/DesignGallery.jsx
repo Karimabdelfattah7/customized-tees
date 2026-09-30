@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import uploadedDesigns from '../lib/uploaded-designs.json'
+import generatedDesigns from '../lib/generated-designs.json'
 import { CATEGORIES } from '../lib/catalog.js'
 import { assetUrl, cloudUrl } from '../lib/images.js'
 import Reveal from './Reveal.jsx'
@@ -17,7 +18,10 @@ export default function DesignGallery({ query, onQueryChange, category, onCatego
     return () => controller.abort()
   }, [])
   const normalized = query.toLowerCase().trim()
-  const concepts = CATEGORIES.map(cat => ({ ...cat, category: cat.slug, id: `concept-${cat.slug}`, image: assetUrl(cat.asset), concept: true }))
+  const concepts = [
+    ...CATEGORIES.map(cat => ({ ...cat, category: cat.slug, id: `concept-${cat.slug}`, image: assetUrl(cat.asset), concept: true })),
+    ...generatedDesigns.map(design => ({ ...CATEGORIES.find(cat => cat.slug === design.category), ...design, image: cloudUrl(design.id), concept: true }))
+  ]
   const uploaded = (cloudDesigns ?? uploadedDesigns).map(design => ({ ...CATEGORIES.find(cat => cat.slug === design.category), ...design, image: cloudUrl(design.id, { version: design.version, contain: true }), concept: false }))
   const designs = [...uploaded, ...concepts].filter(cat =>
     (!category || cat.category === category) && `${cat.label} ${cat.slug} ${cat.title}`.toLowerCase().includes(normalized))

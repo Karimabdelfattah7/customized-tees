@@ -38,12 +38,12 @@ The original color palette, brand treatment, five pages, store photos and color-
 
 ## Work requiring account access before official launch
 
-1. Upload the 26 generated assets to Cloudinary using the stable public IDs. Public delivery is accessible; authenticated uploading is not connected yet.
+1. The original generated assets are uploaded to Cloudinary. The expanded shop collection adds 108 individually generated concepts, nine per category.
 2. Optionally configure server-side Cloudinary credentials in Netlify for automatic discovery of newly added shop designs. Fixed-slot replacements work without this optional feature.
 3. Send one genuine order request and confirm receipt in the store inbox, including an attachment. Browser tests simulate responses and do not establish actual email delivery.
 4. Verify live third-party review and map embeds. Browser layout verification uses controlled responses for those embeds.
 5. Confirm the store's advertised hours, stock ranges and turnaround claims remain current.
 
-Deployment configuration: `netlify.toml` specifies `npm run build` and publish directory `dist`. The prepared branch is for review; production has not been changed.
+Deployment configuration: `netlify.toml` specifies `npm run build` and publish directory `dist`. Production is synchronized from GitHub main. The expanded collection is verified before publication.
 
 Technical references: https://vite.dev/guide/build and https://docs.netlify.com/build/configure-builds/javascript-spas/

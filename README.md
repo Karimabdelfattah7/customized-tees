@@ -47,3 +47,7 @@ Generated imagery is labeled as illustrative concept artwork. It is not proof of
 The form uses the existing Web3Forms access key. Reference files are sent to Litterbox for 72 hours unless Cloudinary upload settings are configured in Customize.jsx. This file host exposes a public download URL, as disclosed beside the upload control.
 
 Browser verification uses simulated upload and submission responses. A real submission and receipt in the store inbox must be checked before the official launch. The third-party Google review widget and maps also need a live visual check.
+
+## Expanded shop collection
+
+The shop contains 120 generated concept mockups (ten per category) alongside nine existing uploaded designs. `src/lib/generated-designs.json` records the 108 added designs. See `docs/SHOP-COLLECTION.md` for image replacement and verification details.

@@ -7,7 +7,7 @@ export default function SiteImage({ src, alt, className, loading = 'lazy' }) {
   const currentSrc = failedSrc === src && local ? local : src
   const [missing, setMissing] = useState(null)
   if (missing === currentSrc) return null
-  const cloudWatermark = currentSrc.includes('l_text:Arial_32_bold:CustomizedTees')
+  const cloudWatermark = currentSrc.includes('l_text:Arial_32_bold:CustomizedTees') || currentSrc.startsWith('/designs/drop/')
   return <span className={`site-image ${className || ''}`}>
     <img src={currentSrc} alt={alt} className="site-image__photo" loading={loading}
       decoding="async" onError={() => {

@@ -36,6 +36,7 @@ export function localImageFor(src) {
     const key = id.slice('ct-concept-'.length)
     return `/images/${key}.webp`
   }
+  if (id.startsWith('ct-drop-')) return `/designs/drop/${id}.webp`
   if (id.startsWith('shop-')) return `/designs/${id}.webp`
   if (id === 'stmatthews-store' || id === 'jefferson-store') return `/${id}.jpg`
   return null
