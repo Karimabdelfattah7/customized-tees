@@ -82,6 +82,7 @@ const items = [
 
 export default function Shop() {
   const [query, setQuery] = useState('')
+  const [category, setCategory] = useState('')
   return (
     <div>
       {/* Top banner */}
@@ -119,8 +120,10 @@ export default function Shop() {
                   type="button"
                   className="theme-inner"
                   style={{ '--tint': t.tint }}
+                  aria-pressed={category === t.slug}
                   onClick={() => {
-                    setQuery(t.label)
+                    setCategory(t.slug)
+                    setQuery('')
                     document.getElementById('designs')?.scrollIntoView({ behavior: 'smooth' })
                   }}
                   aria-label={`Show ${t.label} designs`}
@@ -137,7 +140,7 @@ export default function Shop() {
       {/* ============ SEARCHABLE DESIGN GALLERY ============
           Your uploaded designs grouped by category, with a live search
           box. Images come from Cloudinary (see docs/CLOUDINARY-GUIDE.md). */}
-      <DesignGallery query={query} onQueryChange={setQuery} />
+      <DesignGallery query={query} onQueryChange={setQuery} category={category} onCategoryChange={setCategory} />
 
       {/* ============ PLAIN APPAREL ============ */}
       <section className="block alt">

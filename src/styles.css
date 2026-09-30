@@ -1979,3 +1979,13 @@ button, a, input, select, textarea {
   background-size: 33.333% auto;
 }
 .store-photo { position: relative; }
+
+/* Explicit category navigation and grouped shop designs. */
+.design-category-filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0; }
+.design-category-filters button { padding: 10px 14px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--text); font: inherit; cursor: pointer; }
+.design-category-filters button[aria-pressed="true"] { background: #ff6b00; color: #0a0a0a; border-color: #ff6b00; }
+.design-category-filters button:focus-visible { outline: 2px solid #ff6b00; outline-offset: 3px; }
+.design-category-group { margin: 32px 0 48px; }
+.design-category-heading { font-size: 1.6rem; margin: 0 0 18px; }
+.design-category-heading span { font-size: 1rem; opacity: .7; }
+.theme-inner[aria-pressed="true"] { outline: 2px solid var(--tint); outline-offset: -2px; }

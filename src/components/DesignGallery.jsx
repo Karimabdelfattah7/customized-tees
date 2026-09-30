@@ -6,7 +6,7 @@ import { assetUrl, cloudUrl } from '../lib/images.js'
 import Reveal from './Reveal.jsx'
 import SiteImage from './SiteImage.jsx'
 
-export default function DesignGallery({ query, onQueryChange }) {
+export default function DesignGallery({ query, onQueryChange, category, onCategoryChange }) {
   const [cloudDesigns, setCloudDesigns] = useState(null)
   useEffect(() => {
     const controller = new AbortController()
@@ -17,10 +17,13 @@ export default function DesignGallery({ query, onQueryChange }) {
     return () => controller.abort()
   }, [])
   const normalized = query.toLowerCase().trim()
-  const concepts = CATEGORIES.map(cat => ({ ...cat, id: `concept-${cat.slug}`, image: assetUrl(cat.asset), concept: true }))
+  const concepts = CATEGORIES.map(cat => ({ ...cat, category: cat.slug, id: `concept-${cat.slug}`, image: assetUrl(cat.asset), concept: true }))
   const uploaded = (cloudDesigns ?? uploadedDesigns).map(design => ({ ...CATEGORIES.find(cat => cat.slug === design.category), ...design, image: cloudUrl(design.id, { version: design.version, contain: true }), concept: false }))
   const designs = [...uploaded, ...concepts].filter(cat =>
-    `${cat.label} ${cat.slug} ${cat.title}`.toLowerCase().includes(normalized))
+    (!category || cat.category === category) && `${cat.label} ${cat.slug} ${cat.title}`.toLowerCase().includes(normalized))
+  const groups = CATEGORIES.filter(cat => !category || cat.slug === category)
+    .map(cat => ({ ...cat, designs: designs.filter(design => design.category === cat.slug) }))
+    .filter(cat => cat.designs.length)
   return (
     <section className="block" id="designs">
       <div className="container">
@@ -35,11 +38,17 @@ export default function DesignGallery({ query, onQueryChange }) {
             placeholder="Search designs or themes…" aria-label="Search designs" />
           {query && <button id="search-clear" aria-label="Clear search" onClick={() => onQueryChange('')}>✕</button>}
         </div>
+        <nav className="design-category-filters" aria-label="Design categories">
+          <button type="button" aria-pressed={!category} onClick={() => onCategoryChange('')}>All Designs</button>
+          {CATEGORIES.map(cat => <button type="button" key={cat.slug} aria-pressed={category === cat.slug} onClick={() => onCategoryChange(cat.slug)}>{cat.icon} {cat.label}</button>)}
+        </nav>
         <p className="search-results-count" aria-live="polite">
           {designs.length} design example{designs.length === 1 ? '' : 's'}{query ? ` for “${query}”` : ''}
         </p>
-        <div className="design-grid">
-          {designs.map(cat => <article className="design-card" key={cat.id}>
+        {groups.map(group => <section className="design-category-group" key={group.slug} aria-labelledby={`design-category-${group.slug}`}>
+          <h3 className="design-category-heading" id={`design-category-${group.slug}`}>{group.icon} {group.label} <span>({group.designs.length})</span></h3>
+          <div className="design-grid">
+          {group.designs.map(cat => <article className="design-card" key={cat.id}>
             <div className="design-card__image-wrap">
               <SiteImage className="design-card__img" src={cat.image} alt={`${cat.title}, ${cat.concept ? 'illustrative' : 'uploaded'} ${cat.label.toLowerCase()} design`} />
             </div>
@@ -51,7 +60,8 @@ export default function DesignGallery({ query, onQueryChange }) {
               </div>
             </div>
           </article>)}
-        </div>
+          </div>
+        </section>)}
         {!designs.length && <p className="no-results">No designs match “{query}”. Try another theme or <Link to="/customize">send us your idea</Link>.</p>}
       </div>
     </section>
